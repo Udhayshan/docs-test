@@ -1,0 +1,393 @@
+openapi: 3.0.1
+info:
+  title: Widgets APIs
+  description: API for Widgets
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/widgets:
+    get:
+      tags:
+      - Widgets
+      summary: List widgets
+      description: Get all widgets
+      operationId: getWidgets
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: widgetType
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/WidgetType"
+      responses:
+        "200":
+          description: Widgets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../schema/schemas.yaml#/components/schemas/WidgetResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+    post:
+      tags:
+      - Widgets
+      summary: Create widget
+      description: Create a user widget with given settings
+      operationId: createWidget
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/WidgetCreateRequest"
+        required: true
+      responses:
+        "200":
+          description: Widget created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/WidgetResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/widgets/{widget-id}/_promote:
+    post:
+      tags:
+      - Widgets
+      summary: Promotes user widget to system widget
+      description: Promotes user widget to system widget
+      operationId: promoteWidget
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: widget-id
+        in: path
+        description: The ID of the widget
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: System Widget created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/WidgetResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/widgets/{widget-id}:
+    get:
+      tags:
+      - Widgets
+      summary: Get widget
+      description: Get widget information
+      operationId: getWidget
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: widget-id
+        in: path
+        description: The ID of the widget
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Widget
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/WidgetResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+    put:
+      tags:
+      - Widgets
+      summary: Get widget
+      description: Get widget information
+      operationId: updateWidget
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: widget-id
+        in: path
+        description: The ID of the widget
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/WidgetUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: Widget updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/WidgetResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+    delete:
+      tags:
+      - Widgets
+      summary: Get widget
+      description: Get widget information
+      operationId: deleteWidget
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: widget-id
+        in: path
+        description: The ID of the widget
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: View deleted successfully
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,164 @@
+openapi: 3.0.1
+info:
+  title: Metrics APIs
+  description: API for Metrics
+  version: 1.1.0
+tags:
+- name: Metrics
+  description: Operations related to Metrics
+paths:
+  /api/v1/metrics:
+    get:
+      tags:
+      - Metrics
+      summary: Retrieve metrics
+      description: Retrieve a list of metrics based on query parameters
+      operationId: getMetrics
+      parameters:
+      - name: uniqueKeyId
+        in: query
+        description: Unique key IDs
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: componentName
+        in: query
+        description: Component name
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: metricNames
+        in: query
+        description: "Comma-separated list of metric names. If not provided, defaults\
+          \ to \"ALL\"."
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ALL
+      - name: subject
+        in: query
+        description: "Subject. If not provided, defaults to \"ALL\"."
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ALL
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../schema/schemas.yaml#/components/schemas/MetricsResponseObject"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+    post:
+      tags:
+      - Metrics
+      summary: Store metrics in the database
+      operationId: updateMetrics
+      parameters:
+      - name: isComplete
+        in: query
+        description: return true if complete tracker should be invoked
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schema/schemas.yaml#/components/schemas/CumulativeMetricsObject"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/MetricsResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/import-statistics:
+    get:
+      tags:
+      - Metrics
+      summary: Retrieve import statistics
+      description: Retrieve Import statitics based on query parameters
+      operationId: getImportStatistics
+      parameters:
+      - name: importIds
+        in: query
+        description: Import IDs
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "../schema/schemas.yaml#/components/schemas/ImportMetricObject"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+  /api/v1/import-statistics/_validate:
+    get:
+      tags:
+      - Metrics
+      summary: Retrieve import validation statistics
+      description: Retrieve Import validation statistics based on query parameters
+      operationId: getImportValidationStatistics
+      parameters:
+      - name: import-id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ImportStatsValidationResponse"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

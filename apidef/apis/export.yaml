@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  title: path defn
+  version: 1.0.0
+  description: path defn
+paths:
+  /api/v1/accounts/{account-id}/exports:
+    get:
+      summary: List all exports by page
+      operationId: listExports
+      tags:
+        - Export
+      parameters:
+        - name: account-id
+          in: path
+          required: true
+          description: The ID of the account
+          schema:
+            type: integer
+            format: int64
+        - name: next
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1
+          description: The page number of results
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+            description: The maximum number of integrations per page
+      responses:
+        '200':
+          description: List of all exports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportListResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/{account-id}/exports/{export-id}:
+    get:
+      summary: Download export file
+      operationId: downloadExportFile
+      tags:
+        - Export
+      parameters:
+        - name: account-id
+          in: path
+          required: true
+          description: The ID of the account
+          schema:
+            type: integer
+            format: int64
+        - name: export-id
+          in: path
+          required: true
+          description: The ID of the export
+          schema:
+            type: string
+            maxLength: 32
+      responses:
+        '200':
+          description: Export details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportDetail'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ExportListResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          format: int64
+        totalRecords:
+          type: integer
+        exports:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExportDetail'
+    ExportDetail:
+      type: object
+      properties:
+        exportId:
+          type: string
+          maxLength: 32
+        status:
+          type: string
+          maxLength: 32 # Just putting a sane limit
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+            - FAILED
+            - CANCELLED
+        timeStarted:
+          type: string
+          format: date-time
+          maxLength: 32
+        downloadUrl:
+          type: string
+          maxLength: 512
+    ErrorResponse:
+      $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"

@@ -1,0 +1,285 @@
+---
+servers:
+- url: "http://localhost:8080"
+openapi: "3.0.1"
+paths:
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/supported-actions/{action}/_fetch:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1{connector-id}~1supported-actions~1{action}~1_fetch"
+  /api/v1/accounts/{account-id}/composite-asset-definitions/{definition-id}:
+    $ref: "./compositeAssetDefinitions.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1composite-asset-definitions~1{definition-id}"
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/ticket-sync-config:
+    $ref: "./ticketSyncConfig.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1{connector-id}~1ticket-sync-config"
+  /api/v1/accounts/{account-id}/effective-access:
+    $ref: "./effectiveAccess.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1effective-access"
+  /api/v1/accounts/{account-id}/permissions:
+    $ref: "./permissions.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1permissions"
+  /api/v1/accounts/{account-id}/users/{user-id}/views:
+    $ref: "./views.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users~1{user-id}~1views"
+  /api/v1/accounts/{account-id}/workspace:
+    $ref: "./workspace.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1workspace"
+  /api/v1/accounts/{account-id}/field-values:
+    $ref: "./groupBy.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1field-values"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files/_upload:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1files~1_upload"
+  /api/v1/accounts/{account-id}/teams/{team-id}/basic-details:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1teams~1{team-id}~1basic-details"
+  /api/v1/indices/shared/_delete:
+    $ref: "./index.yaml#/paths/~1api~1v1~1indices~1shared~1_delete"
+  /api/v1/accounts/{account-id}/teams/{team-id}/members:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1teams~1{team-id}~1members"
+  /api/v1/accounts/{account-id}/credentials/oauth/_init:
+    $ref: "./credentials.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1credentials~1oauth~1_init"
+  /api/v1/user-profile-details:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1user-profile-details"
+  /api/v1/accounts/{account-id}/mapped-attributes:
+    $ref: "./alias.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1mapped-attributes"
+  /api/v1/accounts/{account-id}/indices/mappings/integrations/{integration-id}/_update:
+    $ref: "./index.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1indices~1mappings~1integrations~1{integration-id}~1_update"
+  /api/v1/accounts/{account-id}/teams/{team-id}:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1teams~1{team-id}"
+  /api/v1/accounts/{account-id}/users/{user-id}/preferences:
+    $ref: "./users.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users~1{user-id}~1preferences"
+  /api/v1/accounts/{account-id}/composite-asset-definitions/_validate:
+    $ref: "./compositeAssetDefinitions.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1composite-asset-definitions~1_validate"
+  /api/v1/accounts/{account-id}/exports:
+    $ref: "./export.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1exports"
+  /api/v1/accounts/{account-id}/vulnerabilities/_timeline:
+    $ref: "./search.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1vulnerabilities~1_timeline"
+  /api/v1/accounts/{account-id}/sub-accounts/{id}:
+    $ref: "./account.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1sub-accounts~1{id}"
+  /api/v2/endpoints:
+    $ref: "./endpoints.yaml#/paths/~1api~1v2~1endpoints"
+  /api/v1/{account-id}/exports/{export-id}:
+    $ref: "./export.yaml#/paths/~1api~1v1~1{account-id}~1exports~1{export-id}"
+  /api/v1/accounts/{account-id}/sub-accounts/{id}/subscriptions:
+    $ref: "./account.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1sub-accounts~1{id}~1subscriptions"
+  /api/v1/accounts/{account-id}/weaknesses/_search:
+    $ref: "./search.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1weaknesses~1_search"
+  /api/v1/accounts/{account-id}/filters/_convert-query:
+    $ref: "./filter.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1filters~1_convert-query"
+  /api/v1/accounts/{account-id}/custom-mapped-attributes:
+    $ref: "./alias.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1custom-mapped-attributes"
+  /api/v1/accounts/{account-id}/indices/_delete:
+    $ref: "./index.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1indices~1_delete"
+  /api/v1/accounts/{account-id}/teams/_map-accounts-roles:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1teams~1_map-accounts-roles"
+  /api/v1/accounts/{account-id}/vulnerabilities/timeline/_aggregate:
+    $ref: "./groupBy.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1vulnerabilities~1timeline~1_aggregate"
+  /api/v1/accounts/{account-id}/integrations:
+    $ref: "./integrations.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1integrations"
+  /api/v1/accounts/{account-id}/credentials/{credential-id}/key-location:
+    $ref: "./credentials.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1credentials~1{credential-id}~1key-location"
+  /api/v2/user-profile:
+    $ref: "./userManagement.yaml#/paths/~1api~1v2~1user-profile"
+  /api/v1/accounts/{account-id}/connectors/{connectorId}:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1{connectorId}"
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/supported-actions:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1{connector-id}~1supported-actions"
+  /api/v1/accounts/{account-id}/views/{view-id}:
+    $ref: "./views.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1views~1{view-id}"
+  /api/v1/accounts/{account-id}/vendors:
+    $ref: "./integrations.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1vendors"
+  /api/v1/accounts/{account-id}/indices/_create:
+    $ref: "./index.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1indices~1_create"
+  /api/v1/accounts/{account-id}/imports/{import-id}/import-file/{import-file-id}:
+    $ref: "./importFiles.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1import-file~1{import-file-id}"
+  /api/v1/accounts/{account-id}/settings:
+    $ref: "./account.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1settings"
+  /api/v1/accounts/{account-id}/permissions/{permission-id}:
+    $ref: "./permissions.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1permissions~1{permission-id}"
+  /api/v1/accounts/{account-id}/system/preferences:
+    $ref: "./system.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1system~1preferences"
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/list-repos:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1{connector-id}~1list-repos"
+  /api/v1/accounts/{account-id}/products:
+    $ref: "./integrations.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1products"
+  /api/v1/endpoints:
+    $ref: "./endpoints.yaml#/paths/~1api~1v1~1endpoints"
+  /api/v1/workspaces/{workspace-id}/user-profile:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1workspaces~1{workspace-id}~1user-profile"
+  /api/v1/accounts/{account-id}/internal-users/{user-id}/_reInvite:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1internal-users~1{user-id}~1_reInvite"
+  /api/v1/accounts/{account-id}/indices/{index-type}/alias/_get:
+    $ref: "./index.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1indices~1{index-type}~1alias~1_get"
+  /api/v1/accounts/{account-id}/indices/manage:
+    $ref: "./index.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1indices~1manage"
+  /api/v2/endpoints/{endpoint-id}:
+    $ref: "./endpoints.yaml#/paths/~1api~1v2~1endpoints~1{endpoint-id}"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files/file-available:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1files~1file-available"
+  /api/v1/accounts/{account-id}/exports/{job-id}/path:
+    $ref: "./path.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1exports~1{job-id}~1path"
+  /api/v1/accounts/{account-id}/threatactors/_search:
+    $ref: "./search.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1threatactors~1_search"
+  /api/v1/indices/shared/_create:
+    $ref: "./index.yaml#/paths/~1api~1v1~1indices~1shared~1_create"
+  /api/v1/accounts/{account-id}/system/settings:
+    $ref: "./system.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1system~1settings"
+  /api/v1/accounts/{account-id}/sub-accounts:
+    $ref: "./account.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1sub-accounts"
+  /api/v1/accounts/{account-id}/import-metadata/_persist:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1import-metadata~1_persist"
+  /api/v1/accounts/{account-id}/credentials/{credential-id}:
+    $ref: "./credentials.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1credentials~1{credential-id}"
+  /api/v1/endpoints/{endpoint-id}:
+    $ref: "./endpoints.yaml#/paths/~1api~1v1~1endpoints~1{endpoint-id}"
+  /api/v1/accounts/{account-id}/internal-teams:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1internal-teams"
+  /api/v1/accounts/{account-id}/connectors/categories:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1categories"
+  /api/v1/accounts/{account-id}/credentials:
+    $ref: "./credentials.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1credentials"
+  /api/v1/accounts/{account-id}/articles/{article-id}/_uploadFile:
+    $ref: "./article.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1articles~1{article-id}~1_uploadFile"
+  /api/v1/accounts/{account-id}/users/{user-id}/_reInvite:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users~1{user-id}~1_reInvite"
+  /api/v1/accounts/{account-id}/workspaces/{workspace-id}:
+    $ref: "./workspaces.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1workspaces~1{workspace-id}"
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/scanner-connector-configuration:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1{connector-id}~1scanner-connector-configuration"
+  /api/v1/accounts/{account-id}/imports/{import-id}/_import-file:
+    $ref: "./importFiles.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1_import-file"
+  /api/v1/accounts/{account-id}/users:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users"
+  /api/v1/accounts/{account-id}/subscription-plans:
+    $ref: "./plans.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1subscription-plans"
+  /api/v1/accounts:
+    $ref: "./accounts.yaml#/paths/~1api~1v1~1accounts"
+  /api/v1/user-profile:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1user-profile"
+  /api/v1/accounts/{account-id}/weaknesses/_aggregate:
+    $ref: "./groupBy.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1weaknesses~1_aggregate"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files/_download:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1files~1_download"
+  /api/v1/accounts/{account-id}/user-profile:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1user-profile"
+  /api/v1/permissions:
+    $ref: "./permissions.yaml#/paths/~1api~1v1~1permissions"
+  /api/v1/accounts/{account-id}/internal-teams/{team-id}/basic-details:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1internal-teams~1{team-id}~1basic-details"
+  /api/v1/accounts/{account-id}/users/{user-id}/views/{view-id}:
+    $ref: "./views.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users~1{user-id}~1views~1{view-id}"
+  /api/v1/accounts/{account-id}/views/system-views:
+    $ref: "./views.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1views~1system-views"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files/_delete:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1files~1_delete"
+  /api/v1/accounts/{account-id}/teams/_map-accounts-workspaces:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1teams~1_map-accounts-workspaces"
+  /api/v1/accounts/{account-id}/widgets:
+    $ref: "./widgets.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1widgets"
+  /api/v1/accounts/{account-id}/vulnerabilities/_aggregate:
+    $ref: "./groupBy.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1vulnerabilities~1_aggregate"
+  /api/v1/import-statistics/_validate:
+    $ref: "./metrics.yaml#/paths/~1api~1v1~1import-statistics~1_validate"
+  /api/v1/accounts/{account-id}/configured-integrations:
+    $ref: "./apiFields.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1configured-integrations"
+  /api/v1/accounts/{account-id}/imports/{import-id}/_trigger:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1_trigger"
+  /api/v1/accounts/{account-id}/internal-users/{user-id}:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1internal-users~1{user-id}"
+  /api/v1/accounts/{account-id}/widgets/{widget-id}:
+    $ref: "./widgets.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1widgets~1{widget-id}"
+  /api/v1/accounts/{account-id}/exposures/_aggregate:
+    $ref: "./groupBy.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1exposures~1_aggregate"
+  /api/v1/accounts/{account-id}/imports:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports"
+  /api/v1/accounts/{account-id}/mapping:
+    $ref: "./mapping.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1mapping"
+  /api/v1/accounts/{account-id}/articles:
+    $ref: "./article.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1articles"
+  /api/v1/accounts/{account-id}/articles/{article-id}/_downloadFile:
+    $ref: "./article.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1articles~1{article-id}~1_downloadFile"
+  /api/v1/accounts/{account-id}/tags:
+    $ref: "./tags.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1tags"
+  /api/v1/accounts/{account-id}/users/_map-accounts-roles:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users~1_map-accounts-roles"
+  /api/v1/accounts/{account-id}/teams:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1teams"
+  /api/v1/accounts/{account-id}/alias-fields:
+    $ref: "./alias.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1alias-fields"
+  /api/v1/accounts/{account-id}/assets/_aggregate:
+    $ref: "./groupBy.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1assets~1_aggregate"
+  /api/v1/accounts/{account-id}/credentials/oauth/_generate:
+    $ref: "./credentials.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1credentials~1oauth~1_generate"
+  /api/v1/accounts/{account-id}/imports/{import-id}/_initiate:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1_initiate"
+  /api/v1/accounts/{account-id}/composite-asset-definitions:
+    $ref: "./compositeAssetDefinitions.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1composite-asset-definitions"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files:
+    $ref: "./importFiles.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}~1files"
+  /api/v1/accounts/{account-id}/system-alias-fields:
+    $ref: "./alias.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1system-alias-fields"
+  /api/v1/accounts/{account-id}/concatenated-mapping:
+    $ref: "./mapping.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1concatenated-mapping"
+  /api/v2/accounts/{account-id}/system-alias-fields:
+    $ref: "./alias.yaml#/paths/~1api~1v2~1accounts~1{account-id}~1system-alias-fields"
+  /api/v1/accounts/{account-id}/users/{user-id}/basic-details:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users~1{user-id}~1basic-details"
+  /api/v1/import-statistics:
+    $ref: "./metrics.yaml#/paths/~1api~1v1~1import-statistics"
+  /api/v1/accounts/{account-id}/users/_map-accounts-workspaces:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users~1_map-accounts-workspaces"
+  /api/v1/accounts/{account-id}/connectors:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors"
+  /api/v1/accounts/{account-id}/sub-accounts/{id}/subscriptions/{subscription-id}:
+    $ref: "./account.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1sub-accounts~1{id}~1subscriptions~1{subscription-id}"
+  /api/v1/accounts/{account-id}/internal-users/{user-id}/basic-details:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1internal-users~1{user-id}~1basic-details"
+  /api/v1/accounts/{account-id}/widgets/{widget-id}/_promote:
+    $ref: "./widgets.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1widgets~1{widget-id}~1_promote"
+  /api/v1/accounts/{account-id}/views:
+    $ref: "./views.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1views"
+  /api/v1/accounts/{account-id}/integrations/categories:
+    $ref: "./integrations.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1integrations~1categories"
+  /api/v1/accounts/{account-id}/imports/{import-id}:
+    $ref: "./imports.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1{import-id}"
+  /api/v1/accounts/{account-id}/roles:
+    $ref: "./roles.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1roles"
+  /api/v1/accounts/{account-id}/internal-users/{user-id}/status:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1internal-users~1{user-id}~1status"
+  /api/v1/accounts/{account-id}/workspaces:
+    $ref: "./workspaces.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1workspaces"
+  /api/v1/accounts/{account-id}/exposures/_search:
+    $ref: "./search.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1exposures~1_search"
+  /api/v1/accounts/{account-id}/articles/{article-id}:
+    $ref: "./article.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1articles~1{article-id}"
+  /api/v1/accounts/{account-id}/preferences:
+    $ref: "./account.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1preferences"
+  /api/v1/accounts/{account-id}/indices/elementDetails/{entity-type}/_get:
+    $ref: "./index.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1indices~1elementDetails~1{entity-type}~1_get"
+  /api/v1/accounts/{account-id}/composite-asset-definitions/connector/{connector-id}:
+    $ref: "./compositeAssetDefinitions.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1composite-asset-definitions~1connector~1{connector-id}"
+  /api/v1/accounts/{account-id}/imports/files/_validate:
+    $ref: "./importFiles.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1imports~1files~1_validate"
+  /api/v1/accounts/{account-id}/assets/_search:
+    $ref: "./search.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1assets~1_search"
+  /api/v1/accounts/{account-id}/_get-default-view-for-group-by-field:
+    $ref: "./groupByField.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1_get-default-view-for-group-by-field"
+  /api/v1/accounts/{account-id}/vulnerabilities/_search:
+    $ref: "./search.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1vulnerabilities~1_search"
+  /api/v1/metrics:
+    $ref: "./metrics.yaml#/paths/~1api~1v1~1metrics"
+  /api/v1/accounts/{account-id}/connectors/{connectorId}/_validate:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1{connectorId}~1_validate"
+  /api/v1/accounts/{account-id}/internal-users:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1internal-users"
+  /api/v1/accounts/{account-id}/internal-teams/{team-id}:
+    $ref: "./teams.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1internal-teams~1{team-id}"
+  /api/v1/accounts/{account-id}/connectors/{connectorId}/_initiate-import:
+    $ref: "./connectors.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1connectors~1{connectorId}~1_initiate-import"
+  /api/v1/accounts/{account-id}/_get-columns-for-group-by-field:
+    $ref: "./groupByField.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1_get-columns-for-group-by-field"
+  /api/v1/accounts/{account-id}/users/{user-id}:
+    $ref: "./userManagement.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1users~1{user-id}"
+  /api/v1/accounts/{account-id}/api-fields:
+    $ref: "./apiFields.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1api-fields"
+  /api/v1/accounts/{account-id}/system/categories:
+    $ref: "./system.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1system~1categories"
+  /api/v1/accounts/{account-id}/mapped-attributes/connector/{connector-id}:
+    $ref: "./alias.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1mapped-attributes~1connector~1{connector-id}"
+  /api/v1/accounts/{account-id}/views/system-views/{view-id}:
+    $ref: "./views.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1views~1system-views~1{view-id}"
+info:
+  title: "merged spec"
+  description: "merged spec"
+  version: "1.0.0"

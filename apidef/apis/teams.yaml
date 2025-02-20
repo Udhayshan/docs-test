@@ -1,0 +1,659 @@
+openapi: 3.0.1
+info:
+  title: Teams APIs
+  description: API for Teams
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/teams/{team-id}:
+    put:
+      tags:
+      - Teams
+      summary: update a teams
+      operationId: updateTeam
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: team-id
+        in: path
+        description: The ID of the team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateTeamRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TeamResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Teams
+      summary: Delete a team
+      operationId: deleteTeam
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: team-id
+        in: path
+        description: The ID of the team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TeamResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/teams:
+    get:
+      tags:
+      - Teams
+      summary: Get all teams in an account
+      operationId: getAccountTeams
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: searchText
+        in: query
+        description: Used to search user name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: accountIds
+        in: query
+        description: Used to filter by account id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: ids
+        in: query
+        description: Used to filter by team ids
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: workspaceIds
+        in: query
+        description: Used to filter by workspace id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: roleIds
+        in: query
+        description: Used to filter by role id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: userIds
+        in: query
+        description: Used to filter by user id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: limit
+        in: query
+        description: Used to provide pagination limit for a page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 10
+          default: 10
+      - name: showAccountDetails
+        in: query
+        description: Used to get workspace and roles for the user using this flag
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: projection
+        in: query
+        description: Used to get team detail by projections
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/ResponseProjection"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TeamListResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+    post:
+      tags:
+      - Teams
+      summary: Create a teams
+      operationId: createTeam
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateTeamRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TeamResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/teams/{team-id}/basic-details:
+    get:
+      tags:
+      - Teams
+      summary: Get a team basic detail by id
+      operationId: getTeamBasicDetails
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: team-id
+        in: path
+        description: The ID of the team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TeamBasicDetail"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/teams/_map-accounts-workspaces:
+    post:
+      tags:
+      - Teams
+      summary: Update a multiple teams with workspaces
+      operationId: updateTeamsWithAccountsAndWorkspaces
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/MapTeamAccountsWorkspaces"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GenericResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/teams/{team-id}/members:
+    post:
+      tags:
+      - Teams
+      summary: add a multiple users to a team
+      operationId: addMembersInTeam
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: team-id
+        in: path
+        description: The ID of the team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/MapTeamMembers"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TeamResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/internal-teams/{team-id}:
+    put:
+      tags:
+      - Teams
+      summary: update a internal teams
+      operationId: updateInternalTeam
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: -1
+          minimum: -1
+          type: integer
+          format: int64
+      - name: team-id
+        in: path
+        description: The ID of the team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateInternalTeamRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TeamResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/internal-teams/{team-id}/basic-details:
+    get:
+      tags:
+      - Teams
+      summary: Get a internal team basic detail by id
+      operationId: getInternalTeamBasicDetails
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: team-id
+        in: path
+        description: The ID of the team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/InternalTeamBasicDetail"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/teams/_map-accounts-roles:
+    post:
+      tags:
+      - Teams
+      summary: Update a multiple teams with roles
+      operationId: updateTeamsWithAccountsAndRoles
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/MapTeamAccountsRoles"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GenericResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/internal-teams:
+    get:
+      tags:
+      - Teams
+      summary: Get all teams in an account
+      operationId: getAccountInternalTeams
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: -1
+          minimum: -1
+          type: integer
+          format: int64
+      - name: searchText
+        in: query
+        description: Used to search user name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: accountIds
+        in: query
+        description: Used to filter by account id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: ids
+        in: query
+        description: Used to filter by team ids
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: workspaceIds
+        in: query
+        description: Used to filter by workspace id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: roleIds
+        in: query
+        description: Used to filter by role id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: userIds
+        in: query
+        description: Used to filter by user id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: limit
+        in: query
+        description: Used to provide pagination limit for a page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 10
+          default: 10
+      - name: showAccountDetails
+        in: query
+        description: Used to get workspace and roles for the user using this flag
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: projection
+        in: query
+        description: Used to get team detail by projections
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/ResponseProjection"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/InternalTeamListResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+    post:
+      tags:
+      - Teams
+      summary: Create a internal teams
+      operationId: createInternalTeam
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: -1
+          minimum: -1
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateInternalTeamRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TeamResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

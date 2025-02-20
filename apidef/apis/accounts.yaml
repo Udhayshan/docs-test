@@ -1,0 +1,62 @@
+openapi: 3.0.1
+info:
+  title: Accounts APIs
+  description: API for Accounts
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts:
+    get:
+      tags:
+      - Accounts
+      summary: Get all accounts
+      operationId: getAccounts
+      parameters:
+      - name: searchText
+        in: query
+        description: Used to search user name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: limit
+        in: query
+        description: Used to provide pagination limit for a page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 10
+          default: 10
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountListResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Connectors API
+  version: 1.0.0
+  description: API for managing connectors for accounts
+paths:
+  /api/v1/accounts/{account-id}/widgets/_aggregate:
+    post:
+      operationId: aggregate
+      summary: Get Widget data
+      description: Get Data for widgets
+      tags:
+        - Widgets
+      parameters:
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: account-id
+          in: path
+          required: true
+          description: The ID of the account
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schema/schemas.yaml#/components/schemas/WidgetDataRequest"
+      responses:
+        "200":
+          description: View created successfully
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: "../schema/schemas.yaml#/components/schemas/WidgetDataResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: "ERROR"
+                message: "Invalid request parameters"
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: "ERROR"
+                message: "Internal server error"
+                statusCode: "500"
+components:
+  schemas:
+    ErrorResponse:
+      $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"

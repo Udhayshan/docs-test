@@ -1,0 +1,705 @@
+openapi: 3.0.1
+info:
+  title: Connectors APIs
+  description: API for Connectors
+  version: 1.1.0
+tags:
+- name: Connectors
+  description: Operations related to connectors
+paths:
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/scanner-connector-configuration:
+    get:
+      tags:
+      - Connectors
+      summary: Fetch the scanner connector configuration
+      description: Fetch scanner connector configuration
+      operationId: getScannerConnectorConfig
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connector-id
+        in: path
+        description: The Id of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Scanner connector configuration json
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ScannerConnectorConfiguration"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/connectors/categories:
+    get:
+      tags:
+      - Connectors
+      summary: Get the Connector Categories list for an account
+      operationId: getConnectorCategories
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: isArchived
+        in: query
+        description: Only account the archived connectors
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: Category List
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CategoryResponse"
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/list-repos:
+    get:
+      tags:
+      - Connectors
+      summary: Retreive user asset repos
+      description: Retreive all the user assets
+      operationId: getConnectorRepos
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connector-id
+        in: path
+        description: The Id of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: List of all available github repos to the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../schema/schemas.yaml#/components/schemas/GithubAffiliationResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/supported-actions/{action}/_fetch:
+    post:
+      tags:
+      - Connectors
+      summary: Retrieve data from integration by performing the specified action
+      description: Perform the specified action on the integration
+      operationId: performAction
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connector-id
+        in: path
+        description: The Id of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: action
+        in: path
+        description: The action to perform on the Integration
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        "200":
+          description: The required data to perform the action with the Integration
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/connectors/{connectorId}:
+    get:
+      tags:
+      - Connectors
+      summary: Get details of specific connectorId.
+      operationId: getConnector
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connectorId
+        in: path
+        description: The ID of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Connector updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorDetail"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    put:
+      tags:
+      - Connectors
+      summary: update an existing connector for an account
+      operationId: editConnector
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connectorId
+        in: path
+        description: The ID of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: validate
+        in: query
+        description: indicate whether credentials need to be validated. This is used
+          for UI purpose. The credentials will be validated irrespective of this flag
+          if the connector is enabled or new credentials are provided in request body.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        description: Connector details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/EditConnectorRequest"
+        required: true
+      responses:
+        "200":
+          description: Connector updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorResponse"
+        "206":
+          description: Connector updated successfully but cannot be enabled or validated
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    patch:
+      tags:
+      - Connectors
+      summary: update an existing connector for an account
+      operationId: ArchiveConnector
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connectorId
+        in: path
+        description: The ID of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Connector details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/ArchiveConnectorRequest"
+        required: true
+      responses:
+        "200":
+          description: Connector archived successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorResponse"
+        "400":
+          description: Bad request. Check the request payload.
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/connectors/{connectorId}/_validate:
+    get:
+      tags:
+      - Connectors
+      summary: Validate Connector with given Credential Id
+      operationId: Validate Connector Credential
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connectorId
+        in: path
+        description: The ID of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Credentials validated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorResponse"
+        "400":
+          description: Credentials Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/supported-actions:
+    get:
+      tags:
+      - Connectors
+      summary: Gives a list of supported actions that can be performed on the integration
+      operationId: getSupportedActions
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connector-id
+        in: path
+        description: Id of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: List of supported Operations
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/connectors:
+    get:
+      tags:
+      - Connectors
+      summary: List connectors configured for the account. Get details of specific
+        connectorId(s).
+      operationId: getConnectorList
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: category
+        in: query
+        description: The category of integrations to filter by
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+          default: All
+      - name: searchText
+        in: query
+        description: Text to search
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          description: The maximum number of integrations per page
+          format: int32
+          default: 20
+      - name: connectorId
+        in: query
+        description: The ID of the connector
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ALL
+      - name: nextTriggerTimeStamp
+        in: query
+        description: Next Trigger Time Stamp of Connector
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+        example: "{\"BEFORE|AFTER\": \"YYYY-MM-ddTHH:mm:ss\"}"
+      - name: isEnabled
+        in: query
+        description: return only enabled connector
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: isScheduled
+        in: query
+        description: To filter connectors which are scheduled
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: importMode
+        in: query
+        description: The import mode name to filter by
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+          default: ALL
+      - name: integrationId
+        in: query
+        description: The Integration Id to filter by
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+          default: ALL
+      - name: isArchived
+        in: query
+        description: "return only archived connectors. If this is set to be true,\
+          \ includeArchived must be set to true as well."
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: includeArchived
+        in: query
+        description: Filter to include or exclude archived connectors in the response.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: includeAdditionalDetails
+        in: query
+        description: Whether to populate additional details.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: true
+      responses:
+        "200":
+          description: Connector updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorListResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    post:
+      tags:
+      - Connectors
+      summary: Create a new connector for an account
+      operationId: createConnector
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: x-user-id
+        in: header
+        required: true
+        description: The ID of the user
+        schema:
+          type: string
+      - name: validate
+        in: query
+        description: indicate whether credentials need to be validated. This is used
+          for UI purpose. The credentials will be validated irrespective of this flag
+          if the connector is enabled or new credentials are provided in request body.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        description: Connector details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateConnectorRequest"
+        required: true
+      responses:
+        "200":
+          description: Connector created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorResponse"
+        "206":
+          description: Connector created successfully but cannot be enabled or validated
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/connectors/{connectorId}/_initiate-import:
+    post:
+      tags:
+      - Connectors
+      summary: Initiate import.
+      operationId: initiateImport
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connectorId
+        in: path
+        description: The ID of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: isDryRun
+        in: query
+        description: indicate if it is dry run
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: x-user-id
+        in: header
+        required: false
+        description: The ID of the user
+        schema:
+          type: string
+      - name: initiatedBy
+        in: query
+        required: true
+        description: The entity which initiates import.
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/InitiatedBy"
+          default: SYSTEM
+      responses:
+        "202":
+          description: Successful update and import initiated
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/InitiateImportResponse"
+        "400":
+          description: Connector import is already in progress
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: An import is already in progress for this connector.
+                errorHint: An import is currently being processed. Please wait until
+                  the current import is complete before starting a new one.
+                statusCode: 400
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

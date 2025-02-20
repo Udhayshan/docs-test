@@ -1,0 +1,259 @@
+openapi: 3.0.1
+info:
+  title: ImportFiles APIs
+  description: API for ImportFiles
+  version: 1.1.0
+tags:
+- name: ImportFiles
+  description: Operations related to Import Files
+paths:
+  /api/v1/accounts/{account-id}/imports/{import-id}/_import-file:
+    post:
+      tags:
+      - ImportFiles
+      summary: Create Import File details for imports
+      operationId: createImportFileDetails
+      parameters:
+      - name: account-id
+        in: path
+        description: The Id of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The importId of the file
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Create Import File Details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateImportFileRequest"
+        required: true
+      responses:
+        "200":
+          description: Import File Created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ImportFileResponse"
+        "400":
+          description: Error Creating on Import File
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Error Creating on Import File
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files:
+    get:
+      tags:
+      - ImportFiles
+      summary: Get the list of all import files
+      operationId: getImportFiles
+      parameters:
+      - name: account-id
+        in: path
+        description: Id of the Account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The Id of import associated with import files
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: state
+        in: query
+        description: State of import file for filtering records
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/ImportFileState"
+      - name: next
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          description: The page number of results
+          format: int64
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          description: The number of results per page
+          format: int64
+          default: 20
+      responses:
+        "200":
+          description: Files retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GetImportFilesResponse"
+        "400":
+          description: Error on processing request
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Error getting Import File records
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/imports/files/_validate:
+    post:
+      tags:
+      - ImportFiles
+      summary: Validates the given file chunk against Integration Id
+      operationId: validateFileChunk
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: integrationId
+        in: query
+        description: integration Name
+        required: true
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/IntegrationId"
+        example: Tenable_Nessus
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file
+              - integration
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: The file to Validate.
+                  format: binary
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/FileValidationResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/imports/{import-id}/import-file/{import-file-id}:
+    put:
+      tags:
+      - ImportFiles
+      summary: Update Import File details for imports
+      operationId: updateImportFile
+      parameters:
+      - name: account-id
+        in: path
+        description: The Id of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The Import Id of import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-file-id
+        in: path
+        description: The Id of the Import file that need to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Update Import File Details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateImportFileRequest"
+        required: true
+      responses:
+        "200":
+          description: Import File updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ImportFileResponse"
+        "400":
+          description: Error updating on Import File
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Error updating on Import File
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

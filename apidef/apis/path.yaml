@@ -1,0 +1,51 @@
+openapi: 3.0.1
+info:
+  title: Path APIs
+  description: API for Path
+  version: 1.1.0
+tags:
+- name: Path
+  description: Operations related to getting path to push/pull from/to S3
+paths:
+  /api/v1/accounts/{account-id}/exports/{job-id}/path:
+    get:
+      tags:
+      - Path
+      summary: Get S3 Path to persist the export file
+      operationId: getExportPath
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: job-id
+        in: path
+        description: The ID of the export job
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: A JSON Object giving the bucket name and s3 path
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PathResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

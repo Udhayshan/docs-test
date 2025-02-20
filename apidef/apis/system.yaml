@@ -1,0 +1,199 @@
+openapi: 3.0.1
+info:
+  title: System APIs
+  description: API for System
+  version: 1.1.0
+tags:
+  - name: System
+    description: Operations related to Account
+paths:
+  /api/v1/accounts/{account-id}/system/settings:
+    get:
+      tags:
+        - System
+      summary: Get System Settings
+      operationId: getSystemSettings
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: settings
+          in: query
+          description: The setting keys to filter
+          required: false
+          style: form
+          explode: true
+          allowReserved: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/SettingsResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+    post:
+      summary: Save System Settings
+      operationId: saveSystemSettings
+      tags:
+        - System
+      parameters:
+        - name: account-id
+          in: path
+          required: true
+          description: The ID of the account
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schema/schemas.yaml#/components/schemas/SettingsRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '../schema/schemas.yaml#/components/schemas/SettingsSaveResponse'
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Server error
+  /api/v1/accounts/{account-id}/system/preferences:
+    get:
+      tags:
+        - System
+      summary: Get System Preferences
+      operationId: getSystemPreferences
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: preferences
+          in: query
+          description: The preferences keys to filter
+          required: false
+          style: form
+          explode: true
+          allowReserved: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PreferencesResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+    post:
+      summary: Save System Preferences
+      operationId: saveSystemPreferences
+      tags:
+        - System
+      parameters:
+        - name: account-id
+          in: path
+          required: true
+          description: The ID of the account
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schema/schemas.yaml#/components/schemas/PreferencesRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '../schema/schemas.yaml#/components/schemas/PreferenceSaveResponse'
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Server error
+  /api/v1/accounts/{account-id}/system/categories:
+    get:
+      summary: Get System Categories
+      operationId: getSystemCategories
+      tags:
+        - System
+      parameters:
+        - name: account-id
+          in: path
+          required: true
+          description: The ID of the account
+          schema:
+            type: integer
+            format: int64
+        - name: categories
+          in: query
+          required: false
+          description: The category keys to filter
+          schema:
+            type: array
+            items:
+              type: string
+          allowReserved: true
+        - name: type
+          in: query
+          required: true
+          description: Denotes the type of categories to retrieve
+          schema:
+            type: string
+            enum:
+              - PREFERENCES
+              - SETTINGS
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '../schema/schemas.yaml#/components/schemas/CategoriesResponse'
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Server error
+components:
+  schemas: { }
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

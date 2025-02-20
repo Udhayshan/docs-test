@@ -1,0 +1,418 @@
+openapi: 3.0.1
+info:
+  title: Search APIs
+  description: API for Search
+  version: 1.1.0
+tags:
+- name: Search
+  description: Operations related to Asset and Findings search
+paths:
+  /api/v1/accounts/{account-id}/vulnerabilities/_timeline:
+    post:
+      tags:
+      - Search
+      summary: Search vulnerability timeline data
+      operationId: searchVulnerabilityTimelineData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        description: The records limit
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: next
+        in: query
+        description: The sorted values of the last element got in the response
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: The sort details of the search request
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: id:asc
+      - name: searchText
+        in: query
+        description: The text that is to be searched
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SearchRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/SearchResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/exposures/_search:
+    post:
+      tags:
+      - Search
+      summary: Search Exposure data
+      operationId: searchFindingData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        description: The records limit
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: next
+        in: query
+        description: The sorted values of the last element got in the response
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: The sort details of the search request
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: "finding.severity:asc, finding.scannerReportedStatus:desc"
+      - name: searchText
+        in: query
+        description: The text that is to be searched
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SearchRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/SearchResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/weaknesses/_search:
+    post:
+      tags:
+      - Search
+      summary: Search weakness data
+      operationId: searchWeaknessData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        description: The records limit
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: next
+        in: query
+        description: The sorted values of the last element got in the response
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: The sort details of the search request
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: "id:asc, vrs.score:desc"
+      - name: searchText
+        in: query
+        description: The text that is to be searched
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SearchRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/SearchResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/assets/_search:
+    post:
+      tags:
+      - Search
+      summary: Search asset data
+      operationId: searchAssetData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        description: The records limit
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: next
+        in: query
+        description: The sorted values of the last element got in the response
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: The sort details of the search request
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: "asset.criticality:asc, asset.assetType:desc"
+      - name: searchText
+        in: query
+        description: The text that is to be searched
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SearchRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/SearchResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/vulnerabilities/_search:
+    post:
+      tags:
+      - Search
+      summary: Search vulnerability data
+      operationId: searchVulnerabilityData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        description: The records limit
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: next
+        in: query
+        description: The sorted values of the last element got in the response
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: The sort details of the search request
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: "id:asc, riskIndex.index:desc"
+      - name: searchText
+        in: query
+        description: The text that is to be searched
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SearchRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/SearchResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/threatactors/_search:
+    post:
+      tags:
+        - Search
+      summary: Search ThreatActor data
+      operationId: searchThreatActorData
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          description: The records limit
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: next
+          in: query
+          description: The sorted values of the last element got in the response
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: The sort details of the search request
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+          example: "name:asc, originYear:desc"
+        - name: searchText
+          in: query
+          description: The text that is to be searched
+          required: false
+          style: form
+          explode: true
+          allowReserved: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SearchRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/SearchResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

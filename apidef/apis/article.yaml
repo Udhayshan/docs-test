@@ -1,0 +1,303 @@
+openapi: 3.0.1
+info:
+  title: article APIs
+  description: API for article
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/articles/{article-id}/_uploadFile:
+    post:
+      tags:
+      - article
+      summary: Upload a article file
+      operationId: uploadFile
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: article-id
+        in: path
+        description: The ID of the article
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Create Upload Request
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UploadFileRequest"
+        required: true
+      responses:
+        "200":
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UploadFileResponse"
+        "400":
+          description: Invalid Request
+        "500":
+          description: Error uploading file
+  /api/v1/accounts/{account-id}/articles:
+    get:
+      tags:
+      - article
+      summary: get Article list
+      operationId: getArticleListDetails
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: article_id
+        in: query
+        description: article id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: search_text
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          description: search
+      - name: article_visibility
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          description: article visibility
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          description: The maximum count per page
+          format: int32
+          default: 20
+      responses:
+        "200":
+          description: list of article details
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ArticleDetailsResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    post:
+      tags:
+      - article
+      summary: create new Articles
+      operationId: createArticles
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: create Article request details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/ArticleDetail"
+        required: true
+      responses:
+        "200":
+          description: Created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ArticleResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/articles/{article-id}:
+    put:
+      tags:
+      - article
+      summary: update Existing Article
+      operationId: updateArticle
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: article-id
+        in: path
+        description: article id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: update Article request details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/ArticleDetail"
+        required: true
+      responses:
+        "200":
+          description: Updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ArticleResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+      - article
+      summary: delete Article
+      operationId: deleteArticle
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: article-id
+        in: path
+        description: article id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ArticleResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/articles/{article-id}/_downloadFile:
+    get:
+      tags:
+      - article
+      summary: Download a article file
+      operationId: downloadFile
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: article-id
+        in: path
+        description: The ID of the article
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: fileName
+        in: query
+        description: Denotes name of the file being downloaded
+        required: true
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      - name: byteRange
+        in: query
+        description: Denotes the byte range to be consumed
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: File downloaded successfully
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                description: File to be downloaded
+                format: binary
+        "400":
+          description: Invalid Request
+        "500":
+          description: Error downloading file
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

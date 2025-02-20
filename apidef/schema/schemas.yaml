@@ -1,0 +1,6702 @@
+openapi: 3.0.1
+components:
+  schemas:
+    MapUserAccountsWorkspaces:
+      type: object
+      properties:
+        userIds:
+          $ref: "#/components/schemas/UserIds"
+        accounts:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountWorkspaces"
+    DashboardViewSettingsResponse:
+      allOf:
+      - $ref: "#/components/schemas/ViewSettingsResponse"
+      - required:
+        - id
+        type: object
+        properties:
+          layout:
+            $ref: "#/components/schemas/ViewLayout"
+          widgets:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetViewResponse"
+      x-class-extra-annotation: |
+        @io.securin.models.FieldsToConvert(
+          fields = { "widgets.renderComponents.requests",
+                     "widgets.renderComponents.request",
+                     "widgets.renderComponents.view" },
+          entityType = "entityType"
+        )
+    TagAssignmentTypeEnum:
+      type: string
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        supportedAuthTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthTypeSpec"
+    ConnectorDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        accountId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        integrationName:
+          type: string
+        vendorName:
+          type: string
+        isEnabled:
+          type: boolean
+        integrationType:
+          $ref: "#/components/schemas/CategoryType"
+        categories:
+          type: array
+          example:
+          - NETWORK
+          - APPLICATION_SECURITY
+          items:
+            type: string
+        compositeAssetDefinitionId:
+          type: integer
+          format: int64
+        configurationDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationRequiredFields"
+        connectorSpecificOptions:
+          type: array
+          items:
+            $ref: "#/components/schemas/RequiredFields"
+        connectorDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConnectorDetailRequiredField"
+        additionalDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdditionalDetailsRequiredField"
+        isArchived:
+          type: boolean
+        importCount:
+          type: integer
+          format: int64
+    AccountCategory:
+      type: string
+      enum:
+      - Public Sector
+      - Commercial
+    CircleComponent:
+      allOf:
+      - $ref: "#/components/schemas/GenericRenderComponent"
+      - type: object
+        properties:
+          configs:
+            type: array
+            items:
+              required:
+              - config
+              - name
+              type: object
+              properties:
+                name:
+                  type: string
+                config:
+                  required:
+                  - fill
+                  - stroke
+                  type: object
+                  properties:
+                    fill:
+                      pattern: "^#[0-9A-Fa-f]{3,8}$"
+                      type: string
+                    stroke:
+                      pattern: "^#[0-9A-Fa-f]{3,8}$"
+                      type: string
+    VennComponent:
+      allOf:
+        - $ref: "#/components/schemas/GenericRenderComponent"
+        - type: object
+          properties:
+            config:
+              type: object
+              required:
+                - circles
+                - intersections
+              properties:
+                legend:
+                  type: boolean
+                  default: false
+                circles:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - fill
+                      - stroke
+                    properties:
+                      name:
+                        type: string
+                      displayName:
+                        type: string
+                      fill:
+                        pattern: "^#[0-9A-Fa-f]{3,8}$"
+                        type: string
+                      stroke:
+                        pattern: "^#[0-9A-Fa-f]{3,8}$"
+                        type: string
+                intersections:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - circles
+                    properties:
+                      name:
+                        type: string
+                      displayName:
+                        type: string
+                      tooltip:
+                        type: string
+                      circles:
+                        type: array
+                        items:
+                          type: string
+                      fill:
+                        pattern: "^#[0-9A-Fa-f]{3,8}$"
+                        type: string
+                      stroke:
+                        pattern: "^#[0-9A-Fa-f]{3,8}$"
+                        type: string
+    UpdateTeamRequest:
+      required:
+      - accounts
+      - admins
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: Team name
+          example: Tony
+        description:
+          type: string
+          description: Team description
+          example: Stark
+        admins:
+          minItems: 1
+          type: array
+          description: Team admin members id
+          items:
+            type: string
+        members:
+          type: array
+          description: Team members id
+          items:
+            type: string
+        accounts:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccount"
+    MappedAttributesRequest:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/MappedAttributes"
+    AppStat:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "The name of the application or component (e.g., \"Ingestion\
+            \ Framework\")"
+        validation-stats:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationStat"
+    BucketAggResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        aggs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BaseAggregationResponse"
+    CumulativeMetricsObject:
+      type: object
+      properties:
+        appenderLevel:
+          type: string
+          description: Appender level
+          example: INFO
+        nodeId:
+          type: string
+          description: Node ID
+          example: node123
+        uniqueKeyId:
+          type: string
+          description: Unique Key ID
+          example: unique123
+        componentName:
+          type: string
+          description: Component Name
+          example: componentXYZ
+        subject:
+          type: string
+          description: Subject
+          example: subjectABC
+        metric:
+          $ref: "#/components/schemas/Metric"
+        cumulativeMetricValue:
+          type: integer
+          description: Cumulative metric value
+          format: int64
+          example: 123456
+        readableCumulativeMetricValue:
+          type: string
+          description: Readable cumulative metric value
+          example: "123,456"
+        progressState:
+          $ref: "#/components/schemas/StateEnum"
+    DateHistogramBounds:
+      type: object
+      properties:
+        min:
+          type: string
+        max:
+          type: string
+    TriggerImportResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        message:
+          type: string
+          example: Import triggered successfully
+        importId:
+          type: integer
+          format: int64
+        importSequenceId:
+          type: integer
+          format: int64
+    ClickThruInfo:
+      type: object
+      properties:
+        pageId:
+          type: string
+        viewId:
+          type: string
+        viewOverrideProperties:
+          $ref: "#/components/schemas/ViewOverrideProperties"
+    MetricUnitEnum:
+      type: object
+      description: Enumeration for metric units
+      example: TIME_IN_MS
+    IdentificationRuleDefinition:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/IdentificationRuleType"
+        script:
+          $ref: "#/components/schemas/ScriptDefinition"
+        fields:
+          type: array
+          items:
+            type: string
+    GroupByField:
+      type: object
+      properties:
+        field:
+          type: string
+    TeamMemberDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the user associated
+        name:
+          type: string
+          description: user name
+        email:
+          type: string
+          description: user email
+    IndexApiResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The success or error message
+    PermissionsResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+        permissions:
+          type: array
+          items:
+            $ref: "#/components/schemas/PermissionResponse"
+    TENABLE_NESSUS:
+      type: object
+      properties:
+        nessusfield1:
+          type: string
+        nessusfield2:
+          type: string
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    SimpleIdentificationRuleDefinition:
+      required:
+      - fields
+      - type
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/SimpleIdentificationRuleType"
+        fields:
+          type: array
+          items:
+            type: string
+    Exposure:
+      type: object
+      properties:
+        exposureType:
+          type: string
+        remediationMode:
+          type: string
+        statusMapping:
+          type: array
+          items:
+            $ref: "#/components/schemas/StatusMapping"
+        nonParticipatingExposureConfiguration:
+          $ref: "#/components/schemas/NonParticipatingExposureConfiguration"
+    MetricAgg:
+      allOf:
+      - $ref: "#/components/schemas/BaseAggregation"
+      - required:
+        - field
+        type: object
+        properties:
+          field:
+            type: string
+            description: Fields of interest
+    BaseAggregation:
+      required:
+      - function
+      - name
+      type: object
+      properties:
+        filters:
+          type: string
+          description: Fields and their values to be searched
+        name:
+          type: string
+          description: Name of the aggregation
+        function:
+          $ref: "#/components/schemas/AggregateFunction"
+      discriminator:
+        propertyName: function
+        mapping:
+          COUNT: "#/components/schemas/CountAgg"
+          SUM: "#/components/schemas/SumAgg"
+          CARDINALITY: "#/components/schemas/CardinalityAgg"
+          MIN: "#/components/schemas/MinAgg"
+          MAX: "#/components/schemas/MaxAgg"
+          AVG: "#/components/schemas/AvgAgg"
+          TOP_HITS: "#/components/schemas/TopHitsAgg"
+          FILTER: "#/components/schemas/FilterAgg"
+          TERMS: "#/components/schemas/TermsAgg"
+          FIRST: "#/components/schemas/FirstAgg"
+          COMPOSITE: "#/components/schemas/CompositeAgg"
+          HISTOGRAM: "#/components/schemas/HistogramAgg"
+          DATE_HISTOGRAM: "#/components/schemas/DateHistogramAgg"
+      x-class-extra-annotation: |
+        @io.securin.models.FieldsToConvert(
+          fields = { "field", "aggs" }
+        )
+    AccountSubscriptionDetailResponse:
+      type: object
+      properties:
+        plan:
+          $ref: "#/components/schemas/SubscriptionPlanDetails"
+        isPoc:
+          type: boolean
+          description: an subscription is poc
+          example: false
+          default: false
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        duration:
+          $ref: "#/components/schemas/SubscriptionDurationRequest"
+        status:
+          $ref: "#/components/schemas/SubscriptionStatus"
+    GroupByFieldList:
+      type: object
+      properties:
+        targetField:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupByFieldResponse"
+        groupName:
+          type: string
+        groupId:
+          type: string
+    MinAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+    ConcatenatedMappingRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Sample Name
+        subtype:
+          type: string
+          example: Sample Subtype
+        datatype:
+          type: string
+          example: Sample Datatype
+        fields:
+          type: array
+          items:
+            type: string
+    EffectiveAccessResponse:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/EffectiveAccessAccountPermissionResponse"
+    TENABLE_SC:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+          default: false
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/TenableSCAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    TICKETINGDetails:
+      allOf:
+      - $ref: "#/components/schemas/ConnectorDetailRequiredField"
+    UpdateTagResponse:
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+    OperationType:
+      type: string
+      enum:
+      - Contains Any
+      - Contains All
+      - Check Permission Using Action
+    AggregateFunctionsResponse:
+      type: object
+      properties:
+        fieldId:
+          type: string
+        name:
+          type: string
+        entityType:
+          $ref: "#/components/schemas/EntityType"
+        aggregateType:
+          $ref: "#/components/schemas/AliasType"
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        aggregateFunction:
+          type: object
+          additionalProperties: {}
+    CountAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+    SumAgg:
+      allOf:
+        - $ref: "#/components/schemas/MetricAgg"
+    WorkspaceResponse:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/PantherResponseStatus"
+        message:
+          type: string
+          example: Workspace added successfully
+        accountId:
+          type: integer
+          description: account ID
+          format: int64
+          example: 1
+        workspaceId:
+          type: integer
+          description: Created Workspace id for the account
+          format: int64
+          example: 1
+    FieldObject:
+      type: object
+      properties:
+        Integration_ID:
+          type: string
+          example: ID_001
+        field_id:
+          type: string
+          example: field_001
+    FieldConfigurationType:
+      type: string
+    WidgetPosition:
+      required:
+      - h
+      - renderId
+      - w
+      - widgetId
+      - x
+      - "y"
+      type: object
+      properties:
+        renderId:
+          type: integer
+        widgetId:
+          type: integer
+        x:
+          type: integer
+        "y":
+          type: integer
+        w:
+          type: integer
+        h:
+          type: integer
+    GithubRepoUser:
+      type: object
+      properties:
+        loginName:
+          type: string
+        name:
+          type: string
+        avatarUrl:
+          type: string
+        type:
+          type: string
+    SimpleIdentificationRuleType:
+      type: string
+    ArticleVisibilityEnum:
+      type: string
+      enum:
+      - Restricted
+      - Unrestricted
+    FunnelComponentResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataResponse"
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetNamedData"
+    ScannerConnectorConfiguration:
+      type: object
+      properties:
+        remediationConfiguration:
+          $ref: "#/components/schemas/RemediationConfiguration"
+        ticketingConfiguration:
+          $ref: "#/components/schemas/TicketingConfiguration"
+    BucketFieldAggResponse:
+      allOf:
+      - $ref: "#/components/schemas/BucketAggResponse"
+      - type: object
+        properties:
+          key:
+            type: string
+          filters:
+            type: string
+    SankeyComponentResponseData:
+      type: object
+      properties:
+        nodes:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WidgetNamedData"
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+              target:
+                type: string
+              filters:
+                type: string
+              value:
+                type: string
+    SONAR_QUBE:
+      type: object
+      properties:
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/SonarQubeAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    MapTeamAccountsWorkspaces:
+      type: object
+      properties:
+        teamIds:
+          $ref: "#/components/schemas/TeamIds"
+        accounts:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountWorkspaces"
+    WidgetData:
+      type: object
+      properties:
+        value:
+          type: string
+        filters:
+          type: string
+    CMDBConfig:
+      allOf:
+      - $ref: "#/components/schemas/ConfigurationRequiredFields"
+    CompositeAssetInfo:
+      required:
+      - connectorIds
+      - integrationIds
+      - name
+      type: object
+      properties:
+        definitionId:
+          type: integer
+          description: unique id of the asset definition
+          format: int64
+        name:
+          type: string
+          description: name of the composite asset definition
+        integrationIds:
+          type: array
+          description: List of integrations linked to the composite asset definition
+          example:
+          - TENABLE_IO
+          - TENABLE_SC
+          items:
+            type: object
+            properties:
+              id:
+                $ref: "#/components/schemas/IntegrationId"
+              isDefault:
+                type: boolean
+                default: false
+        connectorIds:
+          type: array
+          description: List of connectors linked to the composite asset definition
+          items:
+            $ref: "#/components/schemas/ConnectorIdNameInfo"
+        createdOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+        createdBy:
+          $ref: "#/components/schemas/ConnectorUserDetails"
+    InternalTeamBasicDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: team id of the user associated
+          format: int64
+        name:
+          type: string
+          description: team name
+        description:
+          type: string
+          description: team description
+        teamAdmins:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMemberDetail"
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMemberDetail"
+        managedBy:
+          type: integer
+          description: account id of the team got created
+          format: int64
+        managedByDetail:
+          $ref: "#/components/schemas/AccountDetailResponse"
+        accountsAssignment:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+        accountsCommonRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceRoleDetail"
+        hasAdditionalCustomConfiguration:
+          type: boolean
+          example: false
+          default: false
+        createdBy:
+          $ref: "#/components/schemas/TeamMemberDetail"
+        createdOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+        isInternal:
+          type: boolean
+          description: indicate whether the team is internal or external team
+          example: false
+          default: false
+    MappedAttributeDataType:
+      type: string
+      enum:
+      - INTEGER
+      - LONG
+      - BOOLEAN
+      - FLOAT
+      - DOUBLE
+      - STRING
+      - TIMESTAMP
+    FindingSearchResponse:
+      type: object
+      properties:
+        next:
+          type: string
+          description: String value of the list of the sorted fields of last element
+            in the search results
+        filteredRecords:
+          type: integer
+          format: int64
+        totalRecords:
+          type: integer
+          format: int64
+        exposures:
+          type: object
+    IndexType:
+      type: string
+    AssetSearchResponse:
+      type: object
+      properties:
+        next:
+          type: string
+          description: String value of the list of the sorted fields of last element
+            in the search results
+        filteredRecords:
+          type: integer
+          format: int64
+        totalRecords:
+          type: integer
+          format: int64
+        assets:
+          type: object
+    GetCredentialResponse:
+      allOf:
+      - $ref: "#/components/schemas/CredentialProperties"
+      - required:
+        - accountId
+        - id
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          accountId:
+            type: integer
+            format: int64
+    TopHitsAgg:
+      allOf:
+      - $ref: "#/components/schemas/BaseAggregation"
+      - required:
+        - field
+        type: object
+        properties:
+          field:
+            type: array
+            description: Fields of interest
+            items:
+              type: string
+          sort:
+            type: string
+          from:
+            type: integer
+          size:
+            type: integer
+    CompositeAssetEditActionStatus:
+      type: string
+    CreateConnectorRequest:
+      required:
+      - integrationId
+      - integrationType
+      - name
+      allOf:
+      - $ref: "#/components/schemas/ConnectorRequest"
+    CredentialItem:
+      required:
+      - field
+      - value
+      type: object
+      properties:
+        field:
+          type: string
+          example: accessKey
+        value:
+          type: string
+          example: access12345
+    EndpointMappingValidationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Created endpoint permission ID
+          format: int64
+          example: 1
+        endpointRegex:
+          type: string
+          description: endpoint regex pattern
+          example: /api/vi/users
+        httpMethod:
+          $ref: "#/components/schemas/HttpMethodType"
+        resourceDetails:
+          type: array
+          description: EndpointResourceDetails
+          items:
+            $ref: "#/components/schemas/EndpointResourceDetails"
+        serviceName:
+          type: string
+          description: Service Name
+          example: Panther
+        routingUrl:
+          type: string
+          description: Routing URL
+          example: Panther
+        skipFilters:
+          type: array
+          items:
+            type: string
+        validations:
+          type: array
+          description: EndpointValidations
+          items:
+            $ref: "#/components/schemas/EndpointValidation"
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        additionalInfo:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorAdditionalInfo"
+        errorHint:
+          type: string
+        statusCode:
+          type: string
+        traceId:
+          type: string
+        spanId:
+          type: string
+    MapUserAccountsRoles:
+      type: object
+      properties:
+        userIds:
+          $ref: "#/components/schemas/UserIds"
+        accounts:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountRoles"
+    TicketingConfiguration:
+      required:
+      - maxAttachmentSizeInMB
+      - maxTicketLimitPerDay
+      type: object
+      properties:
+        maxTicketLimitPerDay:
+          type: integer
+          example: 500
+        maxAttachmentSizeInMB:
+          type: integer
+          example: 500
+        fieldFormatDefinitions:
+          type: object
+          additionalProperties:
+            type: string
+    NonParticipatingExposureConfiguration:
+      type: object
+      properties:
+        boundaryConditions:
+          type: array
+          items:
+            type: string
+        defaultTargetStatus:
+          type: string
+    CredentialData:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: integer
+        integrationIds:
+          type: array
+          description: List of integrations
+          example:
+          - TENABLE_IO
+          - TENABLE_SC
+          items:
+            $ref: "#/components/schemas/IntegrationId"
+    TagTeamDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    HttpMethodType:
+      type: string
+      enum:
+      - GET
+      - HEAD
+      - POST
+      - PUT
+      - PATCH
+      - DELETE
+      - OPTIONS
+      - TRACE
+    APIFieldList:
+      type: array
+      items:
+        $ref: "#/components/schemas/APIFieldResponse"
+    CompositeAssetDefinitionDetailEditRequest:
+      type: object
+      properties:
+        compositeAssetMappings:
+          $ref: "#/components/schemas/CompositeAssetInfo"
+        definition:
+          $ref: "#/components/schemas/CompositeAssetDefinition"
+        userConsentToOverridePastMappings:
+          type: boolean
+          description: "By default values is false- If this flag is true, it means\
+            \ the composite asset id current being used by a connector and have already\
+            \ been used to tag identify entities and hence cannot be edited"
+          default: false
+    MapTeamMembers:
+      type: object
+      properties:
+        memberIds:
+          $ref: "#/components/schemas/UserIds"
+    IntegrationResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+        limit:
+          type: integer
+        totalRecords:
+          type: integer
+        integrations:
+          type: array
+          items:
+            $ref: "#/components/schemas/IntegrationData"
+    SingleBucketAggResponse:
+      allOf:
+      - $ref: "#/components/schemas/BaseAggregationResponse"
+      - $ref: "#/components/schemas/BucketAggResponse"
+    InsightVMAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+        pullTagInformation:
+          type: boolean
+          default: false
+        assetGroupIdsForReport:
+          type: array
+          items:
+            type: integer
+    InternalTeamDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: team id of the user associated
+          format: int64
+        name:
+          type: string
+          description: team name
+        isInternal:
+          type: boolean
+          description: determine whether team is an internal or not
+        teamAdmins:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMemberDetail"
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMemberDetail"
+        managedBy:
+          type: integer
+          description: account id of the team got created
+          format: int64
+        managedByDetail:
+          $ref: "#/components/schemas/AccountDetailResponse"
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+        createdOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+    ViewLayout:
+      required:
+      - lg
+      - md
+      - sm
+      - xs
+      - xss
+      type: object
+      properties:
+        lg:
+          type: array
+          items:
+            $ref: "#/components/schemas/WidgetPosition"
+        md:
+          type: array
+          items:
+            $ref: "#/components/schemas/WidgetPosition"
+        sm:
+          type: array
+          items:
+            $ref: "#/components/schemas/WidgetPosition"
+        xs:
+          type: array
+          items:
+            $ref: "#/components/schemas/WidgetPosition"
+        xxs:
+          type: array
+          items:
+            $ref: "#/components/schemas/WidgetPosition"
+    FilterRequest:
+      type: object
+      properties:
+        filters:
+          type: object
+          additionalProperties:
+            type: object
+          description: Filters Map
+    AdminResourceType:
+      type: string
+      enum:
+      - Account
+      - Workspace
+      - User
+      - Team
+    FilterAgg:
+      allOf:
+      - $ref: "#/components/schemas/BaseAggregation"
+      - type: object
+        properties:
+          aggs:
+            type: array
+            description: List of aggregations
+            items:
+              $ref: "#/components/schemas/BaseAggregation"
+    DEFENDER:
+      type: object
+      properties:
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/DefenderImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    GenericResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        message:
+          type: string
+          example: User added successfully
+    ArticleConfigDetails:
+      type: object
+      properties:
+        exploitationEvidence:
+          type: boolean
+          enum:
+          - true
+          - false
+        potentialExposurePII:
+          type: string
+          enum:
+          - None
+          - Unknown
+          - Direct
+          - Indirect
+        editorContent:
+          type: string
+        editorType:
+          type: string
+          enum:
+          - Markdown
+          - WYSIWYG
+        fileInfo:
+          type: string
+    UIDisplayOptions:
+      required:
+      - displayText
+      - value
+      type: object
+      properties:
+        displayText:
+          type: string
+        value:
+          type: string
+    CredentialResponse:
+      type: object
+      properties:
+        credentials:
+          type: array
+          items:
+            $ref: "#/components/schemas/CredentialData"
+    ConnectorCoverageComponent:
+      allOf:
+      - $ref: "#/components/schemas/GenericRenderComponent"
+      - type: object
+        properties:
+          config:
+            type: object
+    GithubAffiliationResponse:
+      type: object
+      properties:
+        owner:
+          type: string
+        affiliationType:
+          $ref: "#/components/schemas/AffiliationType"
+        repos:
+          type: array
+          items:
+            $ref: "#/components/schemas/GithubRepository"
+    GithubRepository:
+      type: object
+      properties:
+        appKey:
+          type: string
+          description: unique key of the repository
+        name:
+          type: string
+          description: Name of the repository
+        owner:
+          $ref: "#/components/schemas/GithubRepoUser"
+        updatedAt:
+          type: string
+          description: The last time the repository was updated
+          format: date-time
+        defaultBranch:
+          type: string
+          description: The default branch of the repository
+        visibility:
+          type: string
+          description: "Visibility of the repository (public/private),"
+        affiliationType:
+          $ref: "#/components/schemas/AffiliationType"
+        selected:
+          type: boolean
+          description: If the repository is selected
+    TagDetailsResponse:
+      properties:
+        next:
+          type: integer
+        limit:
+          type: integer
+        filteredRecords:
+          type: integer
+        totalRecords:
+          type: integer
+        tagDetailList:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagDetail"
+    ValidationResponse:
+      type: object
+      properties:
+        isValid:
+          type: boolean
+          description: Flag to indicate if request  validation has passed or failed
+    ImportFileData:
+      required:
+      - accountId
+      - assetCount
+      - createdOn
+      - exposureCount
+      - fileInfo
+      - fileName
+      - fileNameInStorage
+      - id
+      - importId
+      - sizeInMb
+      - state
+      - updatedOn
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        accountId:
+          type: integer
+          format: int64
+        importId:
+          type: integer
+          format: int64
+        fileName:
+          type: string
+        fileNameInStorage:
+          type: string
+        sizeInMb:
+          type: string
+        state:
+          type: string
+        createdOn:
+          type: string
+        updatedOn:
+          type: string
+        fileInfo:
+          type: string
+        assetCount:
+          type: integer
+          format: int64
+        exposureCount:
+          type: integer
+          format: int64
+    GithubRepoVisibility:
+      type: string
+      enum:
+      - PRIVATE
+      - PUBLIC
+    CategoryResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryData"
+    UserIds:
+      minItems: 1
+      type: array
+      items:
+        type: string
+    ViewType:
+      type: string
+    SearchRequest:
+      type: object
+      properties:
+        fields:
+          type: array
+          description: List of fields to be included in the search results
+          items:
+            type: string
+        excludeFields:
+          type: array
+          description: List of fields to be excluded in the search results
+          items:
+            type: string
+        includeNull:
+          type: boolean
+          default: false
+          description: Set this to true to return the fields in the response which has null value
+        filters:
+          type: string
+          description: Fields and their values to be searched
+    MappedAttributes:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        entityType:
+          $ref: "#/components/schemas/EntityType"
+        mappingDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/MappingDetail"
+        dataType:
+          $ref: "#/components/schemas/MappedAttributeDataType"
+    IndexActions:
+      type: string
+    VulnerabilityTimelineResponse:
+      type: object
+      properties:
+        next:
+          type: string
+          description: String value of the list of the sorted fields of last element
+            in the search results
+        filteredRecords:
+          type: integer
+          format: int64
+        totalRecords:
+          type: integer
+          format: int64
+        hackerChatterCount:
+          type: integer
+          format: int64
+        posts:
+          type: object
+    KeyLocationResponse:
+      type: object
+      properties:
+        arn:
+          type: string
+          example: arn:aws:kms:us-west-2:123456789012:key/abcd1234-efgh-5678-ijkl-9876543210mn
+    EditTicketSyncSettingsRequest:
+      allOf:
+      - $ref: "#/components/schemas/CreateTicketSyncSettingsRequest"
+      - required:
+        - id
+        - name
+        - syncConfig
+        type: object
+        properties:
+          id:
+            type: integer
+          setAsDefault:
+            type: boolean
+            default: false
+    TeamResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        message:
+          type: string
+          example: User added successfully
+        teamId:
+          type: integer
+          description: Created team ID
+          format: int64
+          example: 1
+    AccountDetailListResponse:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountDetailResponse"
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          example: 10
+    UIRadioInputComponent:
+      allOf:
+      - $ref: "#/components/schemas/UIInputComponent"
+      - required:
+        - defaultValue
+        type: object
+        properties:
+          options:
+            type: array
+            items:
+              $ref: "#/components/schemas/UIDisplayOptions"
+    DefaultViewForGroupByFieldResponse:
+      type: object
+      properties:
+        matchedGroupByField:
+          type: string
+        viewId:
+          type: string
+    WizAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+        exposureTypesToPull:
+          type: array
+          items:
+            type: string
+            enum:
+            - Issues
+            - Vulnerabilities
+            - Cloud Configuration Findings
+    ManageIndicesAPIRequest:
+      type: object
+      properties:
+        indexTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/IndexType"
+        accountIds:
+          type: array
+          items:
+            type: string
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/IndexActions"
+        createIndexActionProperties:
+          $ref: "#/components/schemas/CreateIndexActionProperties"
+        updateMappingActionProperties:
+          $ref: "#/components/schemas/UpdateMappingActionProperties"
+        manageDataActionProperties:
+          $ref: "#/components/schemas/ManageDataActionProperties"
+    CompositeAggResponse:
+      allOf:
+      - $ref: "#/components/schemas/MultiBucketAggResponse"
+      - required:
+        - field
+        type: object
+        properties:
+          searchAfter:
+            type: array
+            items:
+              type: string
+    UpdateCredentialRequest:
+      required:
+      - authType
+      - credentialName
+      - credentials
+      - integrationIds
+      type: object
+      properties:
+        credentialName:
+          type: string
+        integrationIds:
+          maxItems: 5
+          minItems: 1
+          type: array
+          description: List of integrations
+          example:
+          - TENABLE_IO
+          - TENABLE_SC
+          items:
+            $ref: "#/components/schemas/IntegrationId"
+        authType:
+          type: string
+          example: BASIC_AUTH
+        credentials:
+          type: array
+          items:
+            $ref: "#/components/schemas/CredentialItem"
+    TICKETING:
+      type: object
+      properties:
+        supportsAuthenticationCheck:
+          type: boolean
+        supportsDryRun:
+          type: boolean
+        supportsDebugMode:
+          type: boolean
+      allOf:
+      - $ref: "#/components/schemas/IntegrationSpecificPropertiesRequired"
+    ConfigurationRequiredFields:
+      properties:
+        integrationType:
+          $ref: "#/components/schemas/CategoryType"
+      discriminator:
+        propertyName: integrationType
+        mapping:
+          SCANNER: "#/components/schemas/SCANNERConfig"
+          CMDB: "#/components/schemas/CMDBConfig"
+          TICKETING: "#/components/schemas/TICKETINGConfig"
+    SystemWidgetUpdateRequest:
+      allOf:
+      - $ref: "#/components/schemas/WidgetUpdateRequest"
+      - type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+    Schedule:
+      type: object
+      properties:
+        cronInUTC:
+          type: string
+        startDate:
+          type: string
+          example: 2024-03-28T04:35:53
+        endDate:
+          type: string
+          example: 2024-03-28T04:35:53
+    InternalUserListResponses:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          example: 1
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/InternalUserListResponse"
+    AggregationTypeEnum:
+      type: string
+      description: Aggregation type
+      example: SUM
+    Metric:
+      type: object
+      properties:
+        metricName:
+          type: string
+          description: Metric name
+          example: responseTime
+        aggregationType:
+          $ref: "#/components/schemas/AggregationTypeEnum"
+        metricUnit:
+          $ref: "#/components/schemas/MetricUnitEnum"
+    ArticleDetail:
+      required:
+      - configuration
+      - title
+      - visibility
+      type: object
+      properties:
+        title:
+          type: string
+        visibility:
+          $ref: "#/components/schemas/ArticleVisibilityEnum"
+        configuration:
+          $ref: "#/components/schemas/ArticleConfigDetails"
+        accountId:
+          type: integer
+          format: int64
+        severity:
+          type: float
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+        updatedOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+        id:
+          type: integer
+          format: int64
+    AccountListResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          format: int64
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+    UngroupedAliasResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          nullable: true
+        limit:
+          type: integer
+        filteredRecords:
+          type: integer
+        totalRecords:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/AliasFieldUi"
+    CHECKMARX_ONE:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/CheckmarxOneAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    SharedIndicesChangeRequest:
+      type: object
+      properties:
+        indices:
+          type: array
+          items:
+            $ref: "#/components/schemas/IndexType"
+    IdentificationGroupDefinition:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: "#/components/schemas/IdentificationRuleDefinition"
+    ImportResponse:
+      required:
+      - importId
+      - message
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        importId:
+          type: integer
+          format: int64
+        importSequenceId:
+          type: integer
+          format: int64
+    ViewSettingsResponse:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the view and if it is a system view then id should be
+            a numeric value appended with sys_
+          example: sys_12345
+        name:
+          type: string
+          example: Example View
+        viewType:
+          $ref: "#/components/schemas/ViewType"
+        layoutType:
+          $ref: "#/components/schemas/LayoutType"
+        isHidden:
+          type: boolean
+          default: false
+        isDisabled:
+          type: boolean
+          default: false
+        filters:
+          type: string
+      discriminator:
+        propertyName: layoutType
+        mapping:
+          LIST_VIEW: "#/components/schemas/ListViewSettingsResponse"
+          DASHBOARD: "#/components/schemas/DashboardViewSettingsResponse"
+    UIInputComponent:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: "#/components/schemas/UIChartInputType"
+        defaultValue:
+          type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          CHECKBOX: "#/components/schemas/UICheckBoxInputComponent"
+          RADIO: "#/components/schemas/UIRadioInputComponent"
+          DATE_RANGE: "#/components/schemas/UIDateRangeInputComponent"
+          DROPDOWN: "#/components/schemas/UIDropDownInputComponent"
+          TOGGLE_SWITCH: "#/components/schemas/UIToggleSwitchInputComponent"
+          HIDDEN: "#/components/schemas/UIHiddenInputComponent"
+    ValidationStat:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "The name of the validation (e.g., \"Asset Count Validation\"\
+            )"
+        validation-metric-details:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationMetricDetail"
+        validation-results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationResult"
+    Asset:
+      type: object
+      properties:
+        assetType:
+          type: string
+        remediationMode:
+          type: string
+        statusMapping:
+          type: array
+          items:
+            $ref: "#/components/schemas/StatusMapping"
+    WidgetUpdateRequest:
+      discriminator:
+        propertyName: type
+        mapping:
+          SYSTEM: "#/components/schemas/SystemWidgetUpdateRequest"
+          CUSTOM: "#/components/schemas/CustomWidgetUpdateRequest"
+      allOf:
+      - $ref: "#/components/schemas/WidgetRequest"
+      - required:
+        - type
+        properties:
+          type:
+            $ref: "#/components/schemas/WidgetType"
+    SubscriptionPlanListResponse:
+      type: object
+      properties:
+        plans:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubscriptionPlanDetails"
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          example: 10
+    AccountEffectivePermission:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: account id of the user associated
+          format: int64
+        name:
+          type: string
+          description: account name of the user associated
+        type:
+          $ref: "#/components/schemas/AccountsType"
+        managementAccountId:
+          type: integer
+          description: management account id for the linked account
+          format: int64
+        partnerAccountId:
+          type: integer
+          description: partner account id
+          format: int64
+        isDefault:
+          type: boolean
+          description: whether the account is default for the user
+          example: false
+          default: false
+        roles:
+          type: array
+          description: User associated roles for each account
+          items:
+            $ref: "#/components/schemas/ResourceRoleDetail"
+        effectivePermissions:
+          type: array
+          description: User associated roles permissions for each account
+          items:
+            $ref: "#/components/schemas/PermissionResponse"
+    EffectiveAccessRequest:
+      type: object
+      properties:
+        teamIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        userIds:
+          type: array
+          items:
+            type: string
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountRoles"
+    StandardAsset:
+      type: object
+      properties:
+        assetId:
+          type: string
+          description: The unique identifier of the asset
+        account-id:
+          type: string
+          description: The account identifier associated with the asset
+        assetIdentifier:
+          type: string
+          description: The identifier of the asset
+        assetIdentifierType:
+          type: string
+          description: The type of asset identifier
+        compositeAssetId:
+          type: string
+          description: The composite identifier of the asset
+        assetLabel:
+          type: string
+          description: The label of the asset
+        lastSeenImportId:
+          type: string
+          description: The import id in which asset was ingested last
+        priorCompositeAssetId:
+          type: string
+          description: The composite id of asset
+        assetLabelType:
+          $ref: "#/components/schemas/AssetLabel"
+        assetType:
+          type: string
+          description: The type of asset
+        source:
+          $ref: "#/components/schemas/ConnectorInformation"
+        firstIngestedOn:
+          type: string
+          description: The timestamp when the asset was first ingested
+          format: date-time
+        lastIngestedOn:
+          type: string
+          description: The timestamp when the asset was last ingested
+          format: date-time
+        scannerFirstDiscoveredOn:
+          type: string
+          description: The timestamp when the asset was first discovered by the scanner
+          format: date-time
+        scannerLastDiscoveredOn:
+          type: string
+          description: The timestamp when the asset was last discovered by the scanner
+          format: date-time
+        status:
+          type: string
+          description: The status of the asset
+        isExternal:
+          type: boolean
+          description: Indicates if the asset is external
+        criticality:
+          type: string
+          description: The criticality level of the asset
+    ImportStatsValidationResponse:
+      required:
+      - app-stats
+      - computed-status
+      type: object
+      properties:
+        computed-status:
+          type: string
+          description: "The overall computed status (e.g., FAILED, SUCCESS)"
+        app-stats:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppStat"
+    SubscriptionDurationRequest:
+      type: object
+      properties:
+        year:
+          type: integer
+          description: expiry year for the subscription
+          example: 2025
+        month:
+          type: integer
+          description: expiry month for the subscription
+          example: 12
+    ElementDetails:
+      type: object
+      properties:
+        element:
+          type: array
+          items:
+            type: string
+        additionalDetailsRequired:
+          type: array
+          items:
+            type: string
+    BarComponentResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataResponse"
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetDataPoint"
+    FORTIFY_ON_DEMAND:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/FortifyAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    ResourceWorkspaceDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: workspace id of the user associated
+          format: int64
+        name:
+          type: string
+          description: workspace name
+    ImportDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+        statusMessage:
+          type: string
+        account-id:
+          type: integer
+          format: int64
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        connectorId:
+          type: integer
+          format: int64
+        connectorName:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        assetCount:
+          type: integer
+        exposureCount:
+          type: integer
+        isDryRun:
+          type: boolean
+        triggeredBy:
+          $ref: "#/components/schemas/InitiatedBy"
+        triggerType:
+          $ref: "#/components/schemas/InitiationType"
+        userId:
+          type: string
+        importMode:
+          type: string
+        fileCount:
+          type: integer
+          format: int64
+        submissionDetails:
+          type: object
+          properties:
+            initiatedBy:
+              $ref: '#/components/schemas/InitiatedBy'
+            initiationType:
+              $ref: '#/components/schemas/InitiationType'
+            userId:
+              type: string
+            userName:
+              type: string
+            userEmail:
+              type: string
+    WidgetInputData:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    LineComponent:
+      allOf:
+      - $ref: "#/components/schemas/GenericRenderComponent"
+      - type: object
+        properties:
+          config:
+            type: object
+            properties:
+              legend:
+                type: boolean
+                default: false
+              lineConfig:
+                type: array
+                items:
+                  properties:
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    stroke:
+                      pattern: "^#[0-9A-Fa-f]{3,8}$"
+                      type: string
+    ConnectorsToCompDefinitionList:
+      type: array
+      items:
+        properties:
+          connectorId:
+            type: integer
+            format: int64
+          existingDefinitionName:
+            type: string
+    CreateTagResponse:
+      properties:
+        tagId:
+          type: integer
+          format: int64
+        message:
+          type: string
+        status:
+          type: string
+    EndpointAccountPositionType:
+      type: string
+      enum:
+      - PATH
+      - QUERY_PARAM
+      - HEADER
+      - REQUEST_BODY
+    FortifyAPIImportProperties:
+      type: object
+      properties:
+        includeSuppressedFindings:
+          type: boolean
+          default: false
+        scanType:
+          type: array
+          items:
+            type: string
+            enum:
+            - Static
+            - Dynamic
+        sdlcStatusType:
+          type: array
+          items:
+            type: string
+    CreateEditAliasResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    CardinalityAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+    AccountSubscriptionResponse:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/PantherResponseStatus"
+        message:
+          type: string
+          example: Subscription added successfully
+        accountId:
+          type: integer
+          description: account ID
+          format: int64
+          example: 1
+        subscriptionId:
+          type: integer
+          description: Created subscription for the account
+          format: int64
+          example: 1
+    SearchType:
+      type: string
+    TagDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        colorType:
+          $ref: "#/components/schemas/TagColorTypeEnum"
+        assignmentType:
+          $ref: "#/components/schemas/TagAssignmentTypeEnum"
+        isLocked:
+          type: boolean
+          default: false
+        resourceTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagResourceTypeEnum"
+        createdBy:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagUserDetails"
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagTeamDetails"
+    WidgetRequest:
+      required:
+      - name
+      - renderComponents
+      - type
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 3
+          type: string
+        description:
+          maxLength: 1000
+          type: string
+        inputComponents:
+          type: array
+          items:
+            $ref: "#/components/schemas/UIInputComponent"
+        renderComponents:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/UIRenderComponent"
+        theme:
+          type: string
+        disabled:
+          type: boolean
+          default: false
+        hidden:
+          type: boolean
+          default: false
+    ConnectorListResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 10
+        totalRecords:
+          type: integer
+          example: 100
+        connectors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConnectorDetail"
+    BarComponent:
+      allOf:
+      - $ref: "#/components/schemas/GenericRenderComponent"
+      - type: object
+        properties:
+          config:
+            type: object
+            properties:
+              legend:
+                type: boolean
+                default: false
+              isHorizontal:
+                type: boolean
+                default: true
+              barConfig:
+                type: array
+                items:
+                  properties:
+                    name:
+                      type: string
+                    barId:
+                      type: number
+                    fill:
+                      pattern: "^#[0-9A-Fa-f]{3,8}$"
+                      type: string
+    AssetResponse:
+      type: object
+      properties:
+        exposures:
+          type: object
+    PermissionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Created permission ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: permission name
+          example: Stark
+        type:
+          $ref: "#/components/schemas/PermissionType"
+    SCANNER:
+      type: object
+      properties:
+        importModes:
+          type: array
+          items:
+            type: string
+        supportsAuthenticationCheck:
+          type: boolean
+        supportsDryRun:
+          type: boolean
+        supportsDebugMode:
+          type: boolean
+        supportsFingerPrintCheck:
+          type: boolean
+      allOf:
+      - $ref: "#/components/schemas/IntegrationSpecificPropertiesRequired"
+    ImplementationType:
+      type: string
+    ConnectorIdNameInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: the id of the connector
+          format: int64
+        name:
+          type: string
+          description: the name of the connector
+    AliasRequest:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/AliasField"
+    SonarQubeAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+        enableProjectFiltering:
+          type: boolean
+          default: false
+        projectIdsForFiltering:
+          type: array
+          items:
+            type: string
+    ConnectorCoverageResponseData:
+      type: object
+      properties:
+        totalAssets:
+          $ref: "#/components/schemas/WidgetData"
+        newAssets:
+          $ref: "#/components/schemas/WidgetData"
+        unSyncedAssets:
+          $ref: "#/components/schemas/WidgetData"
+        coverage:
+          type: integer
+        integration:
+          type: object
+          properties:
+            name:
+              type: string
+            definitionID:
+              type: string
+    NEXPOSE:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/NexposeAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    ListViewSettingsRequest:
+      allOf:
+      - $ref: "#/components/schemas/ViewSettingsRequest"
+      - required:
+        - name
+        type: object
+        properties:
+          entityType:
+            $ref: "#/components/schemas/EntityType"
+          layout:
+            $ref: "#/components/schemas/ViewLayout"
+          widgets:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetViewConfig"
+          columns:
+            type: array
+            items:
+              $ref: "#/components/schemas/ViewColumn"
+          groupBy:
+            $ref: "#/components/schemas/ListViewGroupBy"
+          sort:
+            type: string
+      x-class-extra-annotation: |
+        @io.securin.models.FieldsToConvert(
+          fields = { "groupBy.id", "columns.id", "columns.groupByProperties" },
+          entityType = "entityType"
+        )
+    AvgAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+    ConnectorUserDetails:
+      type: object
+      properties:
+        email:
+          type: string
+          example: ""
+        userId:
+          type: string
+          example: ""
+    PathResponse:
+      type: object
+      properties:
+        bucketName:
+          type: string
+        path:
+          type: string
+    StandardFinding:
+      type: object
+      properties:
+        exposureIdentifier:
+          type: string
+        exposureLabel:
+          type: string
+        exposureType:
+          type: string
+        riskIndex:
+          type: number
+          format: double
+        patch:
+          type: string
+        recommendation:
+          type: string
+        severity:
+          type: string
+        scannerReportedStatus:
+          type: string
+        status:
+          type: string
+        lastResolvedOn:
+          type: string
+          format: date-time
+        resolvedBy:
+          type: string
+        lastSeenImportId:
+          type: string
+          description: The import id in which asset was ingested last
+        account-id:
+          type: string
+        assetId:
+          type: string
+        source:
+          $ref: "#/components/schemas/ConnectorInformation"
+    ImportListResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 10
+        totalRecords:
+          type: integer
+          format: int64
+          example: 100
+        imports:
+          type: array
+          items:
+            $ref: "#/components/schemas/ImportDetail"
+    InternalUserDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Created user ID
+          example: "1"
+        firstName:
+          type: string
+          description: User first name
+          example: Tony
+        lastName:
+          type: string
+          description: User last name
+          example: Stark
+        email:
+          type: string
+          description: User mail id
+          example: tony.stark@example.io
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        statusSince:
+          type: string
+          description: The timestamp when the asset was first ingested
+          format: date-time
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserTeamDetail"
+        directAccountsAssignment:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+        directAccountsCommonRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceRoleDetail"
+        hasAdditionalCustomConfiguration:
+          type: boolean
+          description: does user has any customization workspace or role permissions
+          example: false
+          default: false
+        isInternal:
+          type: boolean
+          description: indicate whether the user is internal or external user
+          example: false
+          default: false
+    GetProductsList:
+      type: object
+      properties:
+        next:
+          type: integer
+        limit:
+          type: integer
+        totalRecords:
+          type: integer
+        vendorId:
+          type: string
+        vendorName:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+    UserListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 84dd6468-ceee-4834-895c-481296041e67
+        email:
+          type: string
+          description: User mail id
+          example: tony.stark@example.io
+        firstName:
+          type: string
+          example: Tony
+        lastName:
+          type: string
+          description: User last name
+          example: Stark
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        statusSince:
+          type: string
+          description: The timestamp when the asset was first ingested
+          format: date-time
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserTeamDetail"
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+    AccountDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Account ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Account name
+          example: Securin
+        category:
+          $ref: "#/components/schemas/AccountCategory"
+        type:
+          $ref: "#/components/schemas/AccountsType"
+        isSandboxAccount:
+          type: boolean
+          description: is linked account is an test account
+          example: false
+          default: false
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+        managementAccount:
+          $ref: "#/components/schemas/AccountDetail"
+        partnerAccount:
+          $ref: "#/components/schemas/AccountDetail"
+    ImportState:
+      type: string
+    ArticleResponse:
+      required:
+      - message
+      - status
+      type: object
+      properties:
+        id:
+          type: long
+        status:
+          type: string
+        message:
+          type: string
+    MetricsResponseObject:
+      type: object
+      properties:
+        metricName:
+          type: string
+          description: Name of the metric
+          example: responseTime
+        metricValue:
+          type: integer
+          description: Value of the metric
+          format: int64
+          example: 123
+        componentName:
+          type: string
+          description: Name of the component
+          example: componentXYZ
+        uniqueKeyId:
+          type: string
+          description: Unique key ID
+          example: unique123
+        subject:
+          type: string
+          description: Subject
+          example: subjectABC
+        readableMetricValue:
+          type: string
+          description: Readable metric value
+          example: 1 second
+        progressState:
+          $ref: "#/components/schemas/StateEnum"
+    FunnelTableComponent:
+      allOf:
+      - $ref: "#/components/schemas/GenericRenderComponent"
+      - type: object
+        properties:
+          config:
+            type: object
+            properties:
+              legend:
+                type: boolean
+                default: false
+    ListViewSettingsResponse:
+      allOf:
+      - $ref: "#/components/schemas/ViewSettingsResponse"
+      - required:
+        - id
+        - name
+        type: object
+        properties:
+          entityType:
+            $ref: "#/components/schemas/EntityType"
+          layout:
+            $ref: "#/components/schemas/ViewLayout"
+          widgets:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetViewResponse"
+          columns:
+            type: array
+            items:
+              $ref: "#/components/schemas/ViewColumn"
+          groupBy:
+            $ref: "#/components/schemas/ListViewGroupBy"
+      x-class-extra-annotation: |
+        @io.securin.models.FieldsToConvert(
+          fields = { "groupBy.id", "columns.id", "columns.groupByProperties" },
+          entityType = "entityType"
+        )
+    UserListResponses:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          example: 1
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserListResponse"
+    CreateCompositeAssetDefinitionDetail:
+      type: object
+      properties:
+        compositeAssetMappings:
+          $ref: "#/components/schemas/CompositeAssetInfo"
+        definition:
+          $ref: "#/components/schemas/CompositeAssetDefinition"
+        userConsentToOverridePastMappings:
+          type: boolean
+          description: "By default values is false- If this flag is true, it means\
+            \ the composite asset id current being used by a connector and have already\
+            \ been used to tag identify entities and hence cannot be edited"
+          default: false
+    APIFieldResponse:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/APIField"
+        group:
+          type: string
+        groupId:
+          type: string
+    MetricAggResponse:
+      allOf:
+      - $ref: "#/components/schemas/BaseAggregationResponse"
+      - type: object
+        properties:
+          value:
+            type: object
+    FileValidationResponse:
+      type: object
+      properties:
+        isValidated:
+          type: boolean
+    FalconAPIImportProperties:
+      type: object
+      properties:
+        enableAutoCloseFindings:
+          type: boolean
+          default: false
+    UpdateCompositeAssetDefMappingOfConnector:
+      required:
+      - compositeAssetDefinitionId
+      type: object
+      properties:
+        compositeAssetDefinitionId:
+          type: integer
+          description: "Can be 0 - (Zero) . When zero it infers that connector is\
+            \ not mapped to any composite asset definition (if any composite asset\
+            \ definition is already mapped, it will be untagged"
+          format: int64
+    LineComponentResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataResponse"
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetDataPoint"
+    UserDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Created user ID
+          example: "1"
+        firstName:
+          type: string
+          description: User first name
+          example: Tony
+        lastName:
+          type: string
+          description: User last name
+          example: Stark
+        email:
+          type: string
+          description: User mail id
+          example: tony.stark@example.io
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        statusSince:
+          type: string
+          description: The timestamp when the asset was first ingested
+          format: date-time
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserTeamDetail"
+        directAccountsAssignment:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+        directAccountsCommonRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceRoleDetail"
+        hasAdditionalCustomConfiguration:
+          type: boolean
+          description: does user has any customization workspace or role permissions
+          example: false
+          default: false
+    ConnectorRequest:
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          type: string
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        integrationType:
+          $ref: "#/components/schemas/IntegrationType"
+        isEnabled:
+          type: boolean
+        nextTriggerTimeStamp:
+          type: string
+          example: YYYY-MM-ddTHH:mm:ss
+        nextTriggerUpdatedBy:
+          type: string
+          enum:
+          - SYSTEM
+          - USER
+        lastRunStatus:
+          type: string
+          default: "true"
+        lastRunTriggerTime:
+          type: string
+          example: YYYY-MM-ddTHH:mm:ss
+        lastSuccessfulRunTriggerTime:
+          type: string
+          example: YYYY-MM-ddTHH:mm:ss
+        configurationDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationRequiredFields"
+        connectorSpecificOptions:
+          type: array
+          items:
+            $ref: "#/components/schemas/RequiredFields"
+        compositeAssetDefinitionId:
+          type: integer
+          description: When composite asset definition is None - this value can be
+            set to 0
+          format: int64
+          default: 0
+    CompositeAssetDefinitionDetail:
+      type: object
+      properties:
+        info:
+          $ref: "#/components/schemas/CompositeAssetInfo"
+        definition:
+          $ref: "#/components/schemas/CompositeAssetDefinition"
+        isDefinitionEditable:
+          type: boolean
+          description: "By default values is false- If this flag is true, it means\
+            \ the composite asset id current being used by a connector and have already\
+            \ been used to tag identify entities and hence cannot be edited"
+          default: false
+    SCANNERConfig:
+      type: object
+      properties:
+        importMode:
+          $ref: "#/components/schemas/ImportMode"
+        endpoint:
+          type: string
+          format: uri
+          example: https://cloud.tenable.com/
+        credentials:
+          $ref: "#/components/schemas/Credentials"
+        schedule:
+          $ref: "#/components/schemas/Schedule"
+      allOf:
+      - $ref: "#/components/schemas/ConfigurationRequiredFields"
+    TicketSyncSettingsConfig:
+      required:
+      - fieldInputType
+      - fieldMappingType
+      - fieldName
+      - fieldOwnedBy
+      type: object
+      properties:
+        fieldName:
+          type: string
+        fieldOwnedBy:
+          type: string
+          enum:
+          - PLATFORM
+          - EXTERNAL_SYSTEM
+        fieldMappingType:
+          type: string
+          enum:
+          - MAPPING
+          - USER_INPUT
+          - FILL_LATER
+        fieldInputType:
+          type: string
+        externalSystemId:
+          type: string
+        fieldValues:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              values:
+                type: array
+                items:
+                  type: string
+        isMandatory:
+          type: boolean
+          default: false
+    ViewSettingsRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maximum: 500
+          type: string
+          example: Example View
+        layoutType:
+          $ref: "#/components/schemas/LayoutType"
+        isHidden:
+          type: boolean
+          default: false
+        isDisabled:
+          type: boolean
+          default: false
+        filters:
+          type: string
+      discriminator:
+        propertyName: layoutType
+        mapping:
+          LIST_VIEW: "#/components/schemas/ListViewSettingsRequest"
+          DASHBOARD: "#/components/schemas/DashboardViewSettingsRequest"
+    WidgetDataRequest:
+      required:
+      - reqType
+      - requestId
+      type: object
+      properties:
+        requestId:
+          type: integer
+          description: Unique Id to identify this request in response
+        reqType:
+          type: string
+          enum:
+          - AGG
+          - WIDGET
+        filters:
+          type: string
+      discriminator:
+        propertyName: reqType
+        mapping:
+          AGG: "#/components/schemas/WidgetAggregateRequest"
+          WIDGET: "#/components/schemas/WidgetViewRequest"
+    WidgetNamedData:
+      allOf:
+      - $ref: "#/components/schemas/WidgetData"
+      - type: object
+        properties:
+          name:
+            type: string
+    AggregatedMetricObject:
+      type: object
+      properties:
+        new-count:
+          type: integer
+          format: int64
+        existing-count:
+          type: integer
+          format: int64
+        duplicate-count:
+          type: integer
+          format: int64
+        total-count:
+          type: integer
+          format: int64
+    UpdateUserStatusRequest:
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/UserStatus"
+    ConnectorCoverageResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataResponse"
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: "#/components/schemas/ConnectorCoverageResponseData"
+    GetImportFilesResponse:
+      required:
+      - files
+      type: object
+      properties:
+        next:
+          type: integer
+          format: int64
+        limit:
+          type: integer
+          format: int64
+        totalRecords:
+          type: integer
+          format: int64
+        files:
+          type: array
+          items:
+            $ref: "#/components/schemas/ImportFileData"
+    EndpointResourceDetails:
+      type: object
+      properties:
+        resourceIdType:
+          $ref: "#/components/schemas/AdminResourceType"
+        resourceIdPositionType:
+          $ref: "#/components/schemas/EndpointAccountPositionType"
+        resourceIdPosition:
+          type: string
+          description: position or place holder text
+          example: account_id
+        order:
+          type: integer
+          description: order of id validation
+          format: int64
+          example: 1
+    InternalUserListResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 84dd6468-ceee-4834-895c-481296041e67
+        email:
+          type: string
+          description: User mail id
+          example: tony.stark@example.io
+        firstName:
+          type: string
+          example: Tony
+        lastName:
+          type: string
+          description: User last name
+          example: Stark
+        isInternal:
+          type: boolean
+          description: indicate whether the user is internal or external user
+          example: false
+          default: false
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        statusSince:
+          type: string
+          description: The timestamp when the asset was first ingested
+          format: date-time
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserTeamDetail"
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+    UpdateUserRequest:
+      required:
+      - email
+      - firstName
+      - lastName
+      type: object
+      properties:
+        firstName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: User first name
+          example: Tony
+        lastName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: User last name
+          example: Stark
+        email:
+          maxLength: 255
+          minLength: 6
+          type: string
+          description: User mail id
+          format: email
+          example: tony.stark@example.io
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        teamIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccount"
+    WidgetViewResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetResponse"
+      - type: object
+        properties:
+          renderId:
+            type: integer
+          inputData:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetInputData"
+    InternalTeamListResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          example: 1
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/InternalTeamDetail"
+    WorkspacesListResponse:
+      type: object
+      properties:
+        workspaces:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkspaceDetailResponse"
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          example: 10
+    ConnectorInformation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the connector
+        connectorId:
+          type: string
+          description: The unique identifier of the connector for finding
+        connectorName:
+          type: string
+          description: The name of the connector for finding
+        name:
+          type: string
+          description: The name of the connector
+        type:
+          type: string
+          description: The type of connector
+        connectorType:
+          type: string
+          description: The type of connector for finding
+    SystemViewRequest:
+      required:
+      - isBetaView
+      - pageId
+      - view
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the view and if it is a system view then id should be
+            a numeric value appended with sys_
+          example: sys_12345
+        isBetaView:
+          type: boolean
+          example: true
+        betaAccountIds:
+          type: array
+          example:
+          - account1
+          - account2
+          items:
+            type: string
+        pageId:
+          $ref: "#/components/schemas/PageId"
+        view:
+          $ref: "#/components/schemas/ViewSettingsRequest"
+    SubscriptionRequest:
+      required:
+      - duration
+      - planId
+      - startDate
+      type: object
+      properties:
+        planId:
+          type: integer
+          description: plan id
+          format: int64
+        isPoc:
+          type: boolean
+          description: an subscription is poc
+          example: false
+          default: false
+        startDate:
+          type: string
+          format: date
+        duration:
+          $ref: "#/components/schemas/SubscriptionDurationRequest"
+    ViewSharedWithList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ViewSharedWith"
+    AccountDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Account ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Account name
+          example: Securin
+    SubscriptionPlanDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Plan ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Plan name
+          example: Securin
+    ValidationMetricDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the validation metric
+        description:
+          type: string
+          description: A brief description of the metric
+        value:
+          type: integer
+          description: The value of the metric
+    WidgetResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          $ref: "#/components/schemas/WidgetType"
+        name:
+          type: string
+        description:
+          type: string
+        inputComponents:
+          type: array
+          items:
+            $ref: "#/components/schemas/UIInputComponent"
+        renderComponents:
+          type: array
+          items:
+            $ref: "#/components/schemas/UIRenderComponent"
+        ownedByUsers:
+          type: array
+          items:
+            type: string
+        ownedByTeams:
+          type: array
+          items:
+            type: string
+        associatedViews:
+          type: array
+          items:
+            type: string
+        theme:
+          type: string
+        disabled:
+          type: boolean
+        hidden:
+          type: boolean
+    CreateOAuthAuthorizeCredentialRequest:
+      allOf:
+      - $ref: "#/components/schemas/CredentialProperties"
+      - required:
+        - code
+        - provider
+        - state
+        type: object
+        properties:
+          authType:
+            type: string
+          state:
+            type: string
+          code:
+            type: string
+          provider:
+            type: string
+    CreateImportRequest:
+      required:
+      - connectorId
+      - integrationId
+      - userId
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User Id details.
+        connectorId:
+          type: integer
+          description: Connector Id details.
+          format: int64
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        drainStopExempt:
+          type: boolean
+          description: Exempt from Drain Stop.
+          example: false
+    CMDBAdditionalDetails:
+      allOf:
+      - $ref: "#/components/schemas/AdditionalDetailsRequiredField"
+    QualysVMDRAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+        enableAssetFiltering:
+          type: boolean
+          default: false
+        groupTagIdsForAssetFiltering:
+          type: array
+          items:
+            type: integer
+        pullTagInformation:
+          type: boolean
+          default: false
+    CompositeAssetDefinition:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: "#/components/schemas/IdentificationGroupDefinition"
+    TeamBasicDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: team id of the user associated
+          format: int64
+        name:
+          type: string
+          description: team name
+        description:
+          type: string
+          description: team description
+        teamAdmins:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMemberDetail"
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMemberDetail"
+        managedBy:
+          type: integer
+          description: account id of the team got created
+          format: int64
+        managedByDetail:
+          $ref: "#/components/schemas/AccountDetailResponse"
+        accountsAssignment:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+        accountsCommonRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceRoleDetail"
+        hasAdditionalCustomConfiguration:
+          type: boolean
+          example: false
+          default: false
+        createdBy:
+          $ref: "#/components/schemas/TeamMemberDetail"
+        createdOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+    EditConnectorRequest:
+      required:
+      - integrationId
+      - integrationType
+      allOf:
+      - $ref: "#/components/schemas/ConnectorRequest"
+    UpdateImportFileRequest:
+      required:
+      - state
+      type: object
+      properties:
+        state:
+          $ref: "#/components/schemas/ImportFileState"
+    RenderComponentAggRequest:
+      allOf:
+      - $ref: "#/components/schemas/RenderComponentRequest"
+      - $ref: "#/components/schemas/AggregateRequest"
+      x-class-extra-annotation: |
+        @io.securin.models.FieldsToConvert(
+          fields = { "aggs" },
+          entityType = "entityType"
+        )
+    ViewListResponse:
+      type: object
+      properties:
+        views:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewResponse"
+    ClickThruFieldInfo:
+      type: object
+      properties:
+        field:
+          type: string
+        clickThruInfo:
+          $ref: "#/components/schemas/ClickThruInfo"
+    PantherResponseStatus:
+      type: string
+      enum:
+      - SUCCESS
+      - ERROR
+    Vendor:
+      type: object
+      properties:
+        id:
+          type: string
+          example: TENABLE
+        name:
+          type: string
+          example: Tenable
+    MaxAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+    FieldType:
+      type: string
+      enum:
+      - String
+      - List
+      - Map
+    AffiliationType:
+      type: string
+      enum:
+      - OWNER
+      - CONTRIBUTOR
+      - ORGANIZATION
+    CircleComponentResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataResponse"
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetNamedData"
+    VennComponentResponse:
+      allOf:
+        - $ref: "#/components/schemas/WidgetDataResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                circles:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/WidgetNamedData"
+                intersections:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/WidgetNamedData"
+    CreateIndexActionProperties:
+      type: object
+      properties:
+        updateMappingForExistingIntegrations:
+          type: boolean
+          default: false
+    WidgetViewRequest:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataRequest"
+      - required:
+        - id
+        type: object
+        properties:
+          id:
+            type: integer
+            description: Widget Id
+            format: int64
+          inputData:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetInputData"
+          componentName:
+            type: string
+            description: Component Name for which data is required
+    FunnelComponent:
+      allOf:
+      - $ref: "#/components/schemas/GenericRenderComponent"
+      - type: object
+        properties:
+          config:
+            type: object
+            properties:
+              funnelConfig:
+                type: array
+                items:
+                  properties:
+                    name:
+                      type: string
+                    funnelId:
+                      type: number
+                    fill:
+                      pattern: "^#[0-9A-Fa-f]{3,8}$"
+                      type: string
+    ViewResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123"
+        name:
+          type: string
+          example: Cloud Assets
+        isFavourite:
+          type: boolean
+          example: true
+        isDefault:
+          type: boolean
+          example: true
+        viewType:
+          $ref: "#/components/schemas/ViewType"
+        layoutType:
+          $ref: "#/components/schemas/LayoutType"
+        pageId:
+          $ref: "#/components/schemas/PageId"
+        isHidden:
+          type: boolean
+          example: true
+        isDisabled:
+          type: boolean
+          example: false
+        createdBy:
+          $ref: "#/components/schemas/ViewUser"
+        updatedBy:
+          $ref: "#/components/schemas/ViewUser"
+        sharedWith:
+          type: object
+          properties:
+            teams:
+              $ref: "#/components/schemas/ViewSharedWithList"
+            users:
+              $ref: "#/components/schemas/ViewSharedWithList"
+          nullable: true
+    SubscriptionStatus:
+      type: string
+      enum:
+      - Active
+      - Expired
+      - Expiring Soon
+    AliasFieldDetails:
+      type: object
+      properties:
+        fieldDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/AliasFieldUi"
+        group:
+          type: string
+        integrationId:
+          type: string
+    TenableSCAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+        infoFindingPlugins:
+          type: array
+          items:
+            type: string
+        enableAssetFiltering:
+          type: boolean
+          default: false
+        assetRepositoryIdForFiltering:
+          type: array
+          items:
+            type: integer
+    TICKETINGConfig:
+      type: object
+      properties:
+        credentials:
+          $ref: "#/components/schemas/Credentials"
+        endpoint:
+          type: string
+          format: uri
+          example: https://cloud.tenable.com/
+      allOf:
+      - $ref: "#/components/schemas/ConfigurationRequiredFields"
+    UIToggleSwitchInputComponent:
+      allOf:
+      - $ref: "#/components/schemas/UIInputComponent"
+    UIHiddenInputComponent:
+      allOf:
+      - $ref: "#/components/schemas/UIInputComponent"
+    WidgetAggregateRequest:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataRequest"
+      - $ref: "#/components/schemas/WidgetRequest"
+      - type: object
+        properties:
+          inputData:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetInputData"
+    OperationResponse:
+      type: object
+      properties:
+        operationSuccessful:
+          type: boolean
+          description: Indicates if operation was successful
+        message:
+          type: string
+          description: A user message specific to the operation
+    StateEnum:
+      type: string
+      description: Enumeration for state
+      example: IN_PROGRESS
+    FirstAggResponse:
+      allOf:
+      - $ref: "#/components/schemas/BaseAggregationResponse"
+      - $ref: "#/components/schemas/BucketFieldAggResponse"
+    DataTableComponent:
+      allOf:
+      - $ref: "#/components/schemas/UIRenderComponent"
+      - required:
+        - config
+        - pageId
+        - view
+        type: object
+        properties:
+          pageId:
+            $ref: "#/components/schemas/PageId"
+          filters:
+            type: string
+          view:
+            $ref: "#/components/schemas/ListViewSettingsRequest"
+          config:
+            required:
+            - limitInputName
+            - sortInputName
+            type: object
+            properties:
+              sortInputName:
+                type: string
+                default: sort
+              limitInputName:
+                type: string
+                default: limit
+    HistogramAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+      - required:
+        - field
+        - interval
+        type: object
+        properties:
+          interval:
+            type: number
+            format: double
+          order:
+            type: array
+            items:
+              type: string
+          aggs:
+            type: array
+            description: List of aggregations
+            items:
+              $ref: "#/components/schemas/BaseAggregation"
+    RenderComponentRequestType:
+      type: string
+      enum:
+      - SEARCH
+      - AGGREGATE
+    UpdateMappingActionProperties:
+      type: object
+      properties:
+        forceUpdateMapping:
+          type: boolean
+          default: true
+    UserStatus:
+      type: string
+      enum:
+      - Active
+      - Inactive
+      - Invited
+      - Locked
+      - Suspended
+    UploadFileResponse:
+      required:
+      - message
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        uploadId:
+          type: string
+    SettingsResponse:
+      type: object
+      properties:
+        merged:
+          type: array
+          items:
+            $ref: "#/components/schemas/Setting"
+        account:
+          type: array
+          items:
+            $ref: "#/components/schemas/Setting"
+        system:
+          type: array
+          items:
+            $ref: "#/components/schemas/Setting"
+    Endpoint:
+      minItems: 1
+      type: array
+      items:
+        type: string
+    TicketSyncSettingsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        ticketSyncSettingId:
+          type: integer
+        ticketSyncSettingName:
+          type: string
+    ResourceAccountWorkspaces:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: provide the account id of the user is mapped
+          format: int64
+          example: 1
+        workspaceIds:
+          minItems: 1
+          type: array
+          items:
+            type: integer
+            format: int64
+    ResourceAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: provide the account id of the user is mapped
+          format: int64
+          example: 1
+        workspaceIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        roleIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+    PageId:
+      type: string
+    UpdateImportRequest:
+      type: object
+      properties:
+        state:
+          $ref: "#/components/schemas/ImportState"
+        updateHeartBeat:
+          type: boolean
+          description: Whether to update heartbeat or not
+        startTime:
+          type: string
+          description: Import Process start time.
+          example: YYYY-MM-ddTHH:mm:ss
+        retryDateTime:
+          type: string
+          description: Import Process retryDateTime.
+          example: YYYY-MM-ddTHH:mm:ss
+        drainStopExempt:
+          type: boolean
+          description: Whether to exempt drain stop or not
+        internalMessage:
+          type: string
+          example: Authorization Failed
+        displayMessage:
+          type: string
+          example: Please check authorization tokens.
+        errorStackTrace:
+          type: string
+          example: NullPointerException thrown Ingestion-Framework
+        forceUpdateImportStatusTo:
+          $ref: "#/components/schemas/ImportState"
+    RoleDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Created role ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: role name
+          example: Stark
+        type:
+          $ref: "#/components/schemas/RoleType"
+    CORTEX_XPANSE:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/XpanseAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    ArchiveConnectorRequest:
+      required:
+      - isArchived
+      type: object
+      properties:
+        isArchived:
+          type: boolean
+    EffectiveAccessPermissionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Created permission ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: permission name
+          example: Stark
+        type:
+          $ref: "#/components/schemas/PermissionType"
+        group:
+          type: string
+          description: permission group
+          example: Admin
+        accessGranted:
+          type: string
+          description: whether permission is granted
+          example: Allowed
+    WidgetViewConfig:
+      required:
+      - renderId
+      type: object
+      properties:
+        renderId:
+          type: integer
+          description: Unique Id to identify this request in response
+        id:
+          type: integer
+          description: Widget Id
+          format: int64
+        inputData:
+          type: array
+          items:
+            $ref: "#/components/schemas/WidgetInputData"
+    AccountDetailWithSubscriptionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Account ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Account name
+          example: Securin
+        category:
+          $ref: "#/components/schemas/AccountCategory"
+        type:
+          $ref: "#/components/schemas/AccountsType"
+        isSandboxAccount:
+          type: boolean
+          description: is linked account is an test account
+          example: false
+          default: false
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+        managementAccount:
+          $ref: "#/components/schemas/AccountDetail"
+        partnerAccount:
+          $ref: "#/components/schemas/AccountDetail"
+        subscriptions:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountSubscriptionDetailResponse"
+    ConnectorCompositeAssetDefinitionResponse:
+      type: object
+      properties:
+        hasDefinition:
+          type: boolean
+        id:
+          type: integer
+          format: int64
+        definition:
+          $ref: "#/components/schemas/CompositeAssetDefinition"
+    CreateTagRequest:
+      allOf:
+      - $ref: "#/components/schemas/TagDetail"
+    RemediationConfiguration:
+      type: object
+      properties:
+        assets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Asset"
+        exposures:
+          type: array
+          items:
+            $ref: "#/components/schemas/Exposure"
+        configurationSource:
+          $ref: "#/components/schemas/ConfigurationSource"
+    TeamListResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          example: 1
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamDetail"
+    UpdateAccountRequest:
+      required:
+      - category
+      - name
+      - status
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 3
+          type: string
+          description: Account name
+          example: Securin
+        category:
+          $ref: "#/components/schemas/AccountCategory"
+        managementAccountId:
+          type: integer
+          description: management account of the linked account get created
+          format: int64
+          example: 1
+        partnerAccountId:
+          type: integer
+          description: id of the account creating the sub accounts
+          format: int64
+          example: 1
+        isSandboxAccount:
+          type: boolean
+          description: Created account ID
+          example: false
+          default: false
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+    WidgetCreateRequest:
+      discriminator:
+        propertyName: type
+        mapping:
+          SYSTEM: "#/components/schemas/SystemWidgetCreateRequest"
+          CUSTOM: "#/components/schemas/CustomWidgetCreateRequest"
+      allOf:
+      - $ref: "#/components/schemas/WidgetRequest"
+      - required:
+        - type
+        properties:
+          type:
+            $ref: "#/components/schemas/WidgetType"
+    ImportMetricObject:
+      type: object
+      properties:
+        assetMetric:
+          $ref: "#/components/schemas/AggregatedMetricObject"
+        exposureMetric:
+          $ref: "#/components/schemas/AggregatedMetricObject"
+    MapTeamAccountsRoles:
+      type: object
+      properties:
+        teamIds:
+          $ref: "#/components/schemas/TeamIds"
+        accounts:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountRoles"
+    ViewColumn:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          example: OPEN_EXPOSURES_COUNT
+        name:
+          type: string
+          example: Open Exposures Count
+        onClickViewId:
+          type: string
+          example: "67890"
+        group:
+          type: string
+          nullable: true
+          example: Falcon Spotlight
+        isHidden:
+          type: boolean
+          example: false
+        isPinned:
+          type: boolean
+          example: true
+        order:
+          type: integer
+          example: 1
+        width:
+          type: number
+          format: float
+          example: 100
+        sort:
+          type: object
+          properties:
+            direction:
+              type: string
+              example: asc
+              enum:
+              - asc
+              - desc
+            index:
+              type: number
+              example: 0
+          nullable: true
+        entityType:
+          type: string
+        groupByProperties:
+          $ref: "#/components/schemas/BaseAggregation"
+    CategoryType:
+      type: string
+    EndpointValidation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Created endpoint permission ID
+          format: int64
+          example: 1
+        operationType:
+          $ref: "#/components/schemas/OperationType"
+        fieldPositionType:
+          $ref: "#/components/schemas/FieldPositionType"
+        field:
+          type: string
+          description: field used for comparison
+          example: /api/vi/users
+        fieldType:
+          $ref: "#/components/schemas/FieldType"
+        value:
+          type: string
+          description: comparison value
+          example: /api/vi/users
+        valueType:
+          $ref: "#/components/schemas/FieldType"
+    CategoriesResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryDetail'
+    CategoryDetail:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    PreferencesRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      required:
+        - key
+        - value
+    SettingsRequest:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    PreferencesResponse:
+      type: object
+      properties:
+        merged:
+          type: array
+          items:
+            $ref: "#/components/schemas/Preference"
+        user:
+          type: array
+          items:
+            $ref: "#/components/schemas/Preference"
+        account:
+          type: array
+          items:
+            $ref: "#/components/schemas/Preference"
+        system:
+          type: array
+          items:
+            $ref: "#/components/schemas/Preference"
+    TagColorTypeEnum:
+      type: string
+    AccountEffectivePermissions:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountEffectivePermission"
+    SCANNERAdditionalDetails:
+      type: object
+      properties:
+        assetCount:
+          type: integer
+          example: 2500
+        exposureCount:
+          type: integer
+          example: 20000
+        nextScanDate:
+          type: string
+          format: date-time
+        lastScanDate:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+        lastScanAssetDelta:
+          type: integer
+          example: 25
+        lastScanExposureDelta:
+          type: integer
+          example: -50
+      allOf:
+      - $ref: "#/components/schemas/AdditionalDetailsRequiredField"
+    InitiateImportResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        message:
+          type: string
+          example: Import initiated successfully
+        importId:
+          type: integer
+          format: int64
+        importSequenceId:
+          type: integer
+          format: int64
+    AdminStatus:
+      type: string
+      enum:
+      - Active
+      - Inactive
+    ScriptType:
+      type: string
+    FunnelTableComponentResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataResponse"
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              properties:
+                name:
+                  type: string
+                data:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/WidgetNamedData"
+    UserPermissionByAccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Created user ID
+          example: "1"
+        firstName:
+          type: string
+          description: User first name
+          example: Tony
+        lastName:
+          type: string
+          description: User last name
+          example: Stark
+        email:
+          type: string
+          description: User mail id
+          example: tony.stark@example.io
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        isInternal:
+          type: boolean
+          description: confirm whether the user is internal or not
+          example: false
+          default: false
+        accounts:
+          $ref: "#/components/schemas/AccountEffectivePermissions"
+    INSIGHT_VM:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/InsightVMAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    IntegrationSpecificPropertiesRequired:
+      properties:
+        type:
+          $ref: "#/components/schemas/CategoryData"
+      discriminator:
+        propertyName: type
+        mapping:
+          SCANNER: "#/components/schemas/SCANNER"
+          CMDB: "#/components/schemas/CMDB"
+          TICKETING: "#/components/schemas/TICKETING"
+    CustomMappedAttributesRequest:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomMappedAttributes"
+    SearchMatchField:
+      type: string
+    TeamDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: team id of the user associated
+          format: int64
+        name:
+          type: string
+          description: team name
+        teamAdmins:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMemberDetail"
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMemberDetail"
+        managedBy:
+          type: integer
+          description: account id of the team got created
+          format: int64
+        managedByDetail:
+          $ref: "#/components/schemas/AccountDetailResponse"
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccountDetail"
+        createdOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+    UploadFileRequest:
+      required:
+      - file
+      - isMultiPartRequest
+      type: object
+      properties:
+        uploadId:
+          type: string
+          description: Upload Id of the multipart request.
+        chunkIndex:
+          type: integer
+          description: Upload file Chunk Index
+          format: int64
+          default: 0
+        isLastChunk:
+          type: boolean
+          description: Denotes if the part is the last chunk of the file to be uploaded
+          default: false
+        isMultiPartRequest:
+          type: boolean
+          description: Denotes if the upload is a multi part upload
+        isSourceFileCompressed:
+          type: boolean
+          default: false
+          description: Denotes if the source file being uploaded is compressed
+        shouldCompressFile:
+          type: boolean
+          default: true
+          description: Denotes if the file being uploaded should be compressed
+        file:
+          type: string
+          description: File to upload.
+          format: binary
+    AliasFieldUi:
+      type: object
+      properties:
+        id:
+          type: string
+        entityType:
+          $ref: "#/components/schemas/EntityType"
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        displayName:
+          type: string
+        integrationName:
+          type: string
+        aliasType:
+          $ref: "#/components/schemas/AliasType"
+        name:
+          type: string
+    ImportMode:
+      type: string
+    SystemWidgetCreateRequest:
+      allOf:
+      - $ref: "#/components/schemas/WidgetCreateRequest"
+      - type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+    CMDB:
+      allOf:
+      - $ref: "#/components/schemas/IntegrationSpecificPropertiesRequired"
+    MetricsResponse:
+      type: string
+    SONAR_CLOUD:
+      type: object
+      properties:
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/SonarCloudAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    Credentials:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    UIChartInputType:
+      type: string
+      enum:
+      - CHECKBOX
+      - RADIO
+      - DATE_RANGE
+      - DROPDOWN
+      - TOGGLE_SWITCH
+      - HIDDEN
+    RenderComponentSearchRequest:
+      allOf:
+      - $ref: "#/components/schemas/RenderComponentRequest"
+      - $ref: "#/components/schemas/SearchRequest"
+    SCANNERDetails:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/ConnectorStatus"
+        isConfigurationComplete:
+          type: boolean
+        createdOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+        updatedOn:
+          type: string
+          format: date-time
+          example: 2024-03-28T04:35:53Z
+        createdBy:
+          $ref: "#/components/schemas/ConnectorUserDetails"
+        updatedBy:
+          $ref: "#/components/schemas/ConnectorUserDetails"
+      allOf:
+      - $ref: "#/components/schemas/ConnectorDetailRequiredField"
+    CMDBDetails:
+      allOf:
+      - $ref: "#/components/schemas/ConnectorDetailRequiredField"
+    UserAccountPermissionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Created user ID
+          example: "1"
+        firstName:
+          type: string
+          description: User first name
+          example: Tony
+        lastName:
+          type: string
+          description: User last name
+          example: Stark
+        email:
+          type: string
+          description: User mail id
+          example: tony.stark@example.io
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        isInternal:
+          type: boolean
+          description: confirm whether the user is internal or not
+          example: false
+          default: false
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountEffectivePermission"
+    AggregateResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/BaseAggregationResponse"
+    VulnerabilitySearchResponse:
+      type: object
+      properties:
+        next:
+          type: string
+          description: String value of the list of the sorted fields of last element
+            in the search results
+        filteredRecords:
+          type: integer
+          format: int64
+        totalRecords:
+          type: integer
+          format: int64
+        vulnerabilities:
+          type: object
+    SankeyComponentResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataResponse"
+      - type: object
+        properties:
+          data:
+            $ref: "#/components/schemas/SankeyComponentResponseData"
+    LayoutType:
+      type: string
+      enum:
+      - LIST_VIEW
+      - DASHBOARD
+    RoleListResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoleDetailResponse"
+    WidgetDataResponse:
+      required:
+      - chartType
+      - componentName
+      - requestId
+      - widgetId
+      type: object
+      properties:
+        widgetId:
+          type: integer
+          format: int64
+        requestId:
+          type: integer
+        componentName:
+          type: string
+        type:
+          $ref: "#/components/schemas/UIChartType"
+        data:
+          type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          CIRCLE: "#/components/schemas/CircleComponentResponse"
+          VENN_2_CIRCLE: "#/components/schemas/VennComponentResponse"
+          BAR: "#/components/schemas/BarComponentResponse"
+          LINE: "#/components/schemas/LineComponentResponse"
+          SANKEY: "#/components/schemas/SankeyComponentResponse"
+          DATA_TABLE: "#/components/schemas/DataTableComponentResponse"
+          FUNNEL: "#/components/schemas/FunnelComponentResponse"
+          FUNNEL_TABLE: "#/components/schemas/FunnelTableComponentResponse"
+          CONNECTOR_COVERAGE: "#/components/schemas/ConnectorCoverageResponse"
+    createSharedWith:
+      type: object
+      properties:
+        teams:
+          type: array
+          items:
+            type: string
+        users:
+          type: array
+          items:
+            type: string
+    UpdateInternalUserRequest:
+      required:
+      - email
+      - firstName
+      - lastName
+      type: object
+      properties:
+        firstName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: User first name
+          example: Tony
+        lastName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: User last name
+          example: Stark
+        email:
+          maxLength: 255
+          minLength: 6
+          type: string
+          description: User mail id
+          format: email
+          example: tony.stark@example.io
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        isInternal:
+          type: boolean
+          default: false
+        teamIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccount"
+    ArticleDetailsResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          format: int64
+        articleList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArticleDetail"
+    FieldPositionType:
+      type: string
+      enum:
+      - UserProfile Response
+      - Request Body
+    UIChartType:
+      type: string
+      enum:
+      - CIRCLE
+      - BAR
+      - VENN_2_CIRCLE
+      - PIE
+      - DATA_TABLE
+      - AREA
+      - LINE
+      - SANKEY
+      - FUNNEL
+      - FUNNEL_TABLE
+      - CONNECTOR_COVERAGE
+    APIFieldListResponse:
+      type: object
+      properties:
+        apiFields:
+          $ref: "#/components/schemas/APIFieldList"
+    CustomWidgetCreateRequest:
+      allOf:
+      - $ref: "#/components/schemas/WidgetCreateRequest"
+      - type: object
+        properties:
+          ownedByUsers:
+            type: array
+            items:
+              type: string
+          ownedByTeams:
+            type: array
+            items:
+              type: string
+    MultiBucketAggResponse:
+      allOf:
+      - $ref: "#/components/schemas/BaseAggregationResponse"
+      - type: object
+        properties:
+          buckets:
+            type: array
+            items:
+              $ref: "#/components/schemas/BucketFieldAggResponse"
+    SavedViewRequest:
+      required:
+      - pageId
+      - view
+      type: object
+      properties:
+        pageId:
+          $ref: "#/components/schemas/PageId"
+        view:
+          $ref: "#/components/schemas/ViewSettingsRequest"
+        shareWith:
+          $ref: "#/components/schemas/createSharedWith"
+    AssetLabel:
+      type: string
+      description: The type of asset label
+      enum:
+      - USER_PROVIDED
+      - DEFAULT
+    IntegrationId:
+      type: string
+    InitiatedBy:
+      type: string
+    InitiationType:
+      type: string
+    SearchResponse:
+      type: object
+      properties:
+        next:
+          type: string
+          description: String value of the list of the sorted fields of last element
+            in the search results
+        filteredRecords:
+          type: integer
+          format: int64
+        totalRecords:
+          type: integer
+          format: int64
+        results:
+          type: object
+    CompositeAssetDefinitionValidationResponse:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/CompositeAssetEditActionStatus"
+        compositeAssetDefinitionId:
+          type: integer
+          format: int64
+        compositeAssetDefinitionName:
+          type: string
+        existingMappings:
+          type: object
+          properties:
+            integrationsToCompositeDefinition:
+              $ref: "#/components/schemas/IntegrationToCompDefinitionList"
+            connectorsToCompositeDefinition:
+              $ref: "#/components/schemas/ConnectorsToCompDefinitionList"
+    CompositeAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+      - required:
+        - field
+        type: object
+        properties:
+          size:
+            type: integer
+            description: Number of records to be returned in the response
+          searchAfter:
+            type: array
+            items:
+              type: string
+          aggs:
+            type: array
+            description: List of aggregations
+            items:
+              $ref: "#/components/schemas/BaseAggregation"
+    CreateCredentialRequest:
+      allOf:
+      - $ref: "#/components/schemas/CredentialProperties"
+    SankeyComponent:
+      allOf:
+      - $ref: "#/components/schemas/GenericRenderComponent"
+      - type: object
+        properties:
+          config:
+            type: object
+            properties:
+              legend:
+                type: boolean
+                default: false
+    AggregateFunction:
+      type: object
+    UIRenderComponent:
+      required:
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: "#/components/schemas/UIChartType"
+        dependsOn:
+          type: array
+          items:
+            type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          CIRCLE: "#/components/schemas/CircleComponent"
+          VENN_2_CIRCLE: "#/components/schemas/VennComponent"
+          BAR: "#/components/schemas/BarComponent"
+          LINE: "#/components/schemas/LineComponent"
+          DATA_TABLE: "#/components/schemas/DataTableComponent"
+          SANKEY: "#/components/schemas/SankeyComponent"
+          FUNNEL: "#/components/schemas/FunnelComponent"
+          FUNNEL_TABLE: "#/components/schemas/FunnelTableComponent"
+          CONNECTOR_COVERAGE: "#/components/schemas/ConnectorCoverageComponent"
+    CreateUserRequest:
+      required:
+      - email
+      - firstName
+      - lastName
+      type: object
+      properties:
+        firstName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: User first name
+          example: Tony
+        lastName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: User last name
+          example: Stark
+        email:
+          maxLength: 255
+          minLength: 6
+          type: string
+          description: User mail id
+          format: email
+          example: tony.stark@example.io
+        teamIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccount"
+    GetTicketSyncSettingsResponse:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          format: int64
+        configuredSettings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              isDefault:
+                type: boolean
+        ticketSyncSetting:
+          type: object
+          properties:
+            syncSettingName:
+              type: string
+            syncConfig:
+              type: array
+              items:
+                $ref: "#/components/schemas/TicketSyncSettingsConfig"
+    ConnectorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        connectorId:
+          type: string
+        hint:
+          type: string
+    GetVendorListResponse:
+      required:
+      - vendors
+      type: object
+      properties:
+        next:
+          type: integer
+        limit:
+          type: integer
+        totalRecords:
+          type: integer
+        vendors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Vendor"
+    NexposeAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+        pullTagInformation:
+          type: boolean
+          default: false
+        assetGroupIdsForReport:
+          type: array
+          items:
+            type: integer
+    UserAssignmentType:
+      type: string
+      enum:
+      - Team
+      - Individual
+      - Both
+    WorkspaceListResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          format: int64
+        workspace:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceWorkspaceDetail"
+    AuthTypeSpec:
+      type: object
+      properties:
+        authType:
+          type: string
+        fields:
+          type: array
+          items:
+            type: string
+        sensitiveFields:
+          type: array
+          items:
+            type: string
+    GetCredentialListResponse:
+      required:
+      - credentialList
+      type: object
+      properties:
+        next:
+          type: integer
+        limit:
+          type: integer
+        totalRecords:
+          type: integer
+        credentialList:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetCredentialResponse"
+    CategoryData:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        count:
+          type: integer
+    ScriptDefinition:
+      required:
+      - ruleSet
+      - value
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/ScriptType"
+        value:
+          type: string
+        ruleSet:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/SimpleIdentificationRuleDefinition"
+    MappingRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Sample Name
+        subtype:
+          type: string
+          example: Sample Subtype
+        datatype:
+          type: string
+          example: Sample Datatype
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/FieldObject"
+    ErrorAdditionalInfo:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+    StandardAliasRequest:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/AliasField"
+    StandardAliasRequestV2:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/AliasField'
+        entityTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityType'
+      required:
+        - fields
+        - entityTypes
+      x-class-extra-annotation: >
+        @io.securin.models.FieldsToConvert(
+          fields = { "fields.id" },
+          entityType = "entityType"
+        )
+    AliasField:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    ViewCreationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        viewId:
+          type: string
+    ResourceRoleDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: role id of the user associated
+          format: int64
+        name:
+          type: string
+          description: role name
+    FindingResponse:
+      type: object
+      properties:
+        standardFinding:
+          $ref: "#/components/schemas/StandardFinding"
+        standardAsset:
+          type: object
+        tenableIOFinding:
+          type: object
+        burpExposure:
+          type: object
+        crowdStrikeFinding:
+          type: object
+        aspmContainerVulnerabilityFinding:
+          type: object
+        aspmSCAVulnerabilityFinding:
+          type: object
+        aspmSecretVulnerabilityFinding:
+          type: object
+        nessusFinding:
+          type: object
+        asmExposure:
+          type: object
+        acunetixExposure:
+          type: object
+        findingImportHistory:
+          type: object
+        cveIds:
+          type: object
+          description: JSON node representing cveIds information
+        vulnerabilities:
+          type: object
+          description: JSON node representing vulnerabilities information
+    TermsIncludeExcludeType:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - LIST
+          - REGEX
+      discriminator:
+        propertyName: type
+        mapping:
+          LIST: "#/components/schemas/TermsIncludeExcludeList"
+          REGEX: "#/components/schemas/TermsIncludeExcludeRegex"
+    DashboardViewSettingsRequest:
+      allOf:
+      - $ref: "#/components/schemas/ViewSettingsRequest"
+      - required:
+        - name
+        type: object
+        properties:
+          layout:
+            $ref: "#/components/schemas/ViewLayout"
+          widgets:
+            type: array
+            items:
+              $ref: "#/components/schemas/WidgetViewConfig"
+    TopHitsAggResponse:
+      allOf:
+      - $ref: "#/components/schemas/BaseAggregationResponse"
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              type: object
+    ResourceAccountRoles:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: provide the account id of the user is mapped
+          format: int64
+          example: 1
+        roleIds:
+          minItems: 1
+          type: array
+          items:
+            type: integer
+            format: int64
+    TenableIOAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+        infoFindingPlugins:
+          type: array
+          items:
+            type: string
+        enableTagFiltering:
+          type: boolean
+          default: false
+        tagCategoryForFiltering:
+          type: string
+        tagsForFiltering:
+          type: array
+          items:
+            type: string
+          default:
+          - ALL
+        enableNetworkFiltering:
+          type: boolean
+          default: false
+        networksForFiltering:
+          type: array
+          items:
+            type: string
+          default:
+          - ALL
+        pullTagInformation:
+          type: boolean
+          default: false
+        enableAutoCloseFindings:
+          type: boolean
+          default: false
+        enableAddAssetsFromOtherScanners:
+          type: boolean
+          default: false
+    UserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        message:
+          type: string
+          example: User added successfully
+        userId:
+          type: string
+          description: Created user ID
+          example: "1"
+    CreateAccountRequest:
+      required:
+      - category
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 3
+          type: string
+          description: Account name
+          example: Securin
+        category:
+          $ref: "#/components/schemas/AccountCategory"
+        type:
+          $ref: "#/components/schemas/AccountsType"
+        managementAccountId:
+          type: integer
+          description: management account of the linked account get created
+          format: int64
+          example: 1
+        partnerAccountId:
+          type: integer
+          description: id of the account creating the sub accounts
+          format: int64
+          example: 1
+        isSandboxAccount:
+          type: boolean
+          description: Created account ID
+          example: false
+          default: false
+    DataTableComponentResponse:
+      allOf:
+      - $ref: "#/components/schemas/WidgetDataResponse"
+      - type: object
+        properties:
+          data:
+            $ref: "#/components/schemas/SearchResponse"
+    UserTeamDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: team id of the user associated
+          format: int64
+        name:
+          type: string
+          description: team name
+    DefenderImportProperties:
+      type: object
+      properties:
+        pullInActiveAssets:
+          type: boolean
+          default: false
+    PersistConnectorMetadataRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          format: int64
+        importId:
+          type: integer
+          format: int64
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+    AccountSubscriptionListResponse:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountSubscriptionDetailResponse"
+        next:
+          type: integer
+          example: 1
+        totalRecords:
+          type: integer
+          example: 10
+    TENABLE_IO:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+          default: false
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/TenableIOAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    RoleType:
+      type: string
+      enum:
+      - Standard
+      - Internal
+      - Custom
+    TICKETINGAdditionalDetails:
+      allOf:
+      - $ref: "#/components/schemas/AdditionalDetailsRequiredField"
+    UIDropDownInputComponent:
+      allOf:
+      - $ref: "#/components/schemas/UIInputComponent"
+      - required:
+        - defaultValue
+        type: object
+        properties:
+          options:
+            type: array
+            items:
+              $ref: "#/components/schemas/UIDisplayOptions"
+    ValidationResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the validation result
+        description:
+          type: string
+          description: A brief description of the validation result
+        expectedRaw:
+          type: string
+          description: The raw expected formula or expression
+        expectedSubstituted:
+          type: string
+          description: The expected result after substitution
+        expectedEvaluated:
+          type: string
+          description: The expected result after evaluation
+        status:
+          type: string
+          description: "The status of the validation result (e.g., \"failed\", \"\
+            passed\")"
+    ViewUser:
+      type: object
+      properties:
+        source:
+          $ref: "#/components/schemas/ViewType"
+        email:
+          type: string
+          example: sampleuser@xyz.com
+        userId:
+          type: string
+          example: "123"
+    TagResourceTypeEnum:
+      type: string
+    WorkspaceDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          description: Workspace name
+          example: Securin
+        description:
+          type: string
+          description: Workspace description
+          example: Securin
+    Identity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    IntegrationType:
+      type: object
+    IdentificationRuleType:
+      type: string
+    ConfigurationSource:
+      type: object
+      properties:
+        scannerName:
+          type: string
+        accountId:
+          type: integer
+        connectorId:
+          type: integer
+    StatusMapping:
+      type: object
+      properties:
+        sourceStatuses:
+          type: array
+          items:
+            type: string
+        targetStatus:
+          type: string
+    FetchAliasResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          nullable: true
+        limit:
+          type: integer
+        filteredRecords:
+          type: integer
+        totalRecords:
+          type: integer
+        aliasFields:
+          type: array
+          items:
+            $ref: "#/components/schemas/AliasFieldDetails"
+    RequiredFields:
+      properties:
+        integrationId:
+          type: string
+          enum:
+          - TENABLE_IO
+          - TENABLE_NESSUS
+          - TENABLE_SC
+          - FALCON_SPOTLIGHT
+          - ASPM
+          - QUALYS_VMDR
+          - DEFENDER
+          - NEXPOSE
+          - CORTEX_XPANSE
+          - SONAR_CLOUD
+          - SONAR_QUBE
+          - INSIGHT_VM
+          - WIZ
+          - PRISMA_CLOUD_COMPUTE
+          - CHECKMARX_ONE
+          - FORTIFY_ON_DEMAND
+          - AWS_INSPECTOR
+      discriminator:
+        propertyName: integrationId
+        mapping:
+          TENABLE_IO: "#/components/schemas/TENABLE_IO"
+          TENABLE_NESSUS: "#/components/schemas/TENABLE_NESSUS"
+          FALCON_SPOTLIGHT: "#/components/schemas/FALCON_SPOTLIGHT"
+          TENABLE_SC: "#/components/schemas/TENABLE_SC"
+          QUALYS_VMDR: "#/components/schemas/QUALYS_VMDR"
+          DEFENDER: "#/components/schemas/DEFENDER"
+          NEXPOSE: "#/components/schemas/NEXPOSE"
+          CORTEX_XPANSE: "#/components/schemas/CORTEX_XPANSE"
+          SONAR_CLOUD: "#/components/schemas/SONAR_CLOUD"
+          SONAR_QUBE: "#/components/schemas/SONAR_QUBE"
+          INSIGHT_VM: "#/components/schemas/INSIGHT_VM"
+          WIZ: "#/components/schemas/WIZ"
+          FORTIFY_ON_DEMAND: "#/components/schemas/FORTIFY_ON_DEMAND"
+          PRISMA_CLOUD_COMPUTE: "#/components/schemas/PRISMA_CLOUD_COMPUTE"
+          CHECKMARX_ONE: "#/components/schemas/CHECKMARX_ONE"
+          AWS_INSPECTOR: "#/components/schemas/AWS_INSPECTOR"
+    TagUserDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+    Preference:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        dataType:
+          type: string
+        isEditable:
+          type: boolean
+        category:
+          type: string
+        isVisibleInPreferences:
+          type: boolean
+        name:
+          type: string
+        description:
+          type: string
+        allowedValues:
+          type: string
+    WidgetType:
+      type: string
+      enum:
+      - SYSTEM
+      - CUSTOM
+    ConnectorMappingDetails:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          format: int64
+        connectorName:
+          type: string
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        vendorName:
+          type: string
+        productName:
+          type: string
+        assetMappedAttributes:
+          type: array
+          items:
+            $ref: "#/components/schemas/MappedAttributesInfo"
+        exposureMappedAttributed:
+          type: array
+          items:
+            $ref: "#/components/schemas/MappedAttributesInfo"
+    CustomWidgetUpdateRequest:
+      allOf:
+      - $ref: "#/components/schemas/WidgetUpdateRequest"
+      - type: object
+        properties:
+          ownedByUsers:
+            type: array
+            items:
+              type: string
+          ownedByTeams:
+            type: array
+            items:
+              type: string
+    EffectiveAccessAccountPermissionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: account id of the user associated
+          format: int64
+        name:
+          type: string
+          description: account name of the user associated
+        type:
+          $ref: "#/components/schemas/AccountsType"
+        roles:
+          type: array
+          description: User associated roles for each account
+          items:
+            $ref: "#/components/schemas/ResourceRoleDetail"
+        effectivePermissions:
+          type: array
+          description: User associated roles permissions for each account
+          items:
+            $ref: "#/components/schemas/EffectiveAccessPermissionResponse"
+    FirstAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+      - required:
+        - field
+        type: object
+        properties:
+          size:
+            type: integer
+            description: Number of records to be returned in the response
+          sort:
+            type: string
+          aggs:
+            type: array
+            description: List of aggregations
+            items:
+              $ref: "#/components/schemas/BaseAggregation"
+          include:
+            $ref: "#/components/schemas/TermsIncludeExcludeType"
+          exclude:
+            $ref: "#/components/schemas/TermsIncludeExcludeType"
+    BaseAggregationResponse:
+      required:
+      - function
+      type: object
+      properties:
+        function:
+          type: string
+        name:
+          type: string
+          description: Name of the aggregation
+        filters:
+          type: string
+          description: Click through filters
+      discriminator:
+        propertyName: function
+        mapping:
+          COUNT: "#/components/schemas/MetricAggResponse"
+          SUM: '#/components/schemas/MetricAggResponse'
+          CARDINALITY: "#/components/schemas/MetricAggResponse"
+          MIN: "#/components/schemas/MetricAggResponse"
+          MAX: "#/components/schemas/MetricAggResponse"
+          AVG: "#/components/schemas/MetricAggResponse"
+          TOP_HITS: "#/components/schemas/TopHitsAggResponse"
+          FILTER: "#/components/schemas/SingleBucketAggResponse"
+          TERMS: "#/components/schemas/MultiBucketAggResponse"
+          FIRST: "#/components/schemas/FirstAggResponse"
+          COMPOSITE: "#/components/schemas/CompositeAggResponse"
+          HISTOGRAM: "#/components/schemas/MultiBucketAggResponse"
+          DATE_HISTOGRAM: "#/components/schemas/MultiBucketAggResponse"
+    PermissionType:
+      type: string
+      enum:
+      - Standard
+      - Internal
+    ConnectorStatus:
+      type: string
+    IntegrationToCompDefinitionList:
+      type: array
+      items:
+        properties:
+          integrationId:
+            type: string
+            format: int64
+          existingDefinitionName:
+            type: string
+    CreateIndicesMappingResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: success or error message
+        aliasList:
+          type: array
+          description: The aliases created for the account
+          items:
+            type: string
+    CreateInternalUserRequest:
+      required:
+      - email
+      - firstName
+      - lastName
+      type: object
+      properties:
+        firstName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: User first name
+          example: Tony
+        lastName:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: User last name
+          example: Stark
+        email:
+          maxLength: 255
+          minLength: 6
+          type: string
+          description: User mail id
+          format: email
+          example: tony.stark@example.io
+        teamIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        isInternal:
+          type: boolean
+          default: false
+        accounts:
+          minItems: 0
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccount"
+    QUALYS_VMDR:
+      type: object
+      properties:
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/QualysVMDRAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    AliasType:
+      type: string
+    ViewDeletionResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    RenderComponentRequest:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/RenderComponentRequestType"
+        pageId:
+          $ref: "#/components/schemas/PageId"
+        entityType:
+          $ref: "#/components/schemas/EntityType"
+        additionalVariables:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              jsonPath:
+                type: string
+              type:
+                type: string
+                enum:
+                - STRING
+                - LIST
+                - MAP
+              required:
+                type: boolean
+                default: true
+      discriminator:
+        propertyName: type
+        mapping:
+          SEARCH: "#/components/schemas/RenderComponentSearchRequest"
+          AGGREGATE: "#/components/schemas/RenderComponentAggRequest"
+    CreateTeamRequest:
+      required:
+      - accounts
+      - admins
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: Team name
+          example: Tony
+        description:
+          type: string
+          description: Team description
+          example: Stark
+        admins:
+          minItems: 1
+          type: array
+          description: Team admin members id
+          items:
+            type: string
+        members:
+          type: array
+          description: Team members id
+          items:
+            type: string
+        accounts:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccount"
+    UpdateInternalTeamRequest:
+      required:
+      - accounts
+      - admins
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: Team name
+          example: Tony
+        description:
+          type: string
+          description: Team description
+          example: Stark
+        admins:
+          minItems: 1
+          type: array
+          description: Team admin members id
+          items:
+            type: string
+        members:
+          type: array
+          description: Team members id
+          items:
+            type: string
+        isInternal:
+          type: boolean
+          default: false
+        accounts:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccount"
+    GroupByFieldListResponse:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupByFieldList"
+    PantherErrorResponse:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/PantherResponseStatus"
+        message:
+          type: string
+          description: error message
+        errorHint:
+          type: string
+          description: error hint
+        statusCode:
+          type: integer
+          description: error status code
+          example: 400
+        traceId:
+          type: string
+          description: Created account ID
+          example: asdqe32dwqd21e
+        spanId:
+          type: string
+          description: Created account ID
+          example: asd23e21dw1232
+    GetIndexAliasResponse:
+      type: object
+      properties:
+        alias:
+          type: string
+          description: The index alias for the account
+        message:
+          type: string
+          description: The success or error message
+    ViewSharedWith:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        email:
+          type: string
+          example: sampleuser@xyz.com
+    TermsAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+      - required:
+        - field
+        type: object
+        properties:
+          size:
+            maximum: 300
+            type: integer
+            description: Number of records to be returned in the response
+          sort:
+            type: string
+          include:
+            $ref: "#/components/schemas/TermsIncludeExcludeType"
+          exclude:
+            $ref: "#/components/schemas/TermsIncludeExcludeType"
+          aggs:
+            type: array
+            description: List of aggregations
+            items:
+              $ref: "#/components/schemas/BaseAggregation"
+    TermsIncludeExcludeList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: string
+      allOf:
+      - $ref: "#/components/schemas/TermsIncludeExcludeType"
+    EndpointIdResponse:
+      required:
+      - roleIds
+      type: object
+      properties:
+        endpoints:
+          $ref: "#/components/schemas/Endpoint"
+    GetElementDetailsResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        elementDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/ElementDetails"
+    IntegrationData:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        vendorName:
+          type: string
+        type:
+          $ref: "#/components/schemas/CategoryType"
+        integrationSpecificProperties:
+          type: array
+          items:
+            $ref: "#/components/schemas/IntegrationSpecificPropertiesRequired"
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Identity"
+        tags:
+          type: array
+          items:
+            type: string
+        prefix:
+          type: string
+        supportsFileFormats:
+          type: array
+          items:
+            type: string
+    WeaknessSearchResponse:
+      type: object
+      properties:
+        next:
+          type: string
+          description: String value of the list of the sorted fields of last element
+            in the search results
+        filteredRecords:
+          type: integer
+          format: int64
+        totalRecords:
+          type: integer
+          format: int64
+        weaknesses:
+          type: object
+    CheckmarxOneAPIImportProperties:
+      type: object
+    AccountsType:
+      type: string
+      enum:
+      - Management
+      - Linked
+      - Partner - OEM
+      - Partner - Reseller
+      - Partner - MSSP
+      - OEM Partner
+    XpanseAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+    CreateTicketSyncSettingsRequest:
+      required:
+      - name
+      - syncConfig
+      type: object
+      properties:
+        name:
+          type: string
+        isLocked:
+          type: boolean
+          default: false
+        syncConfig:
+          type: array
+          items:
+            $ref: "#/components/schemas/TicketSyncSettingsConfig"
+    UIDateRangeInputComponent:
+      allOf:
+      - $ref: "#/components/schemas/UIInputComponent"
+      - required:
+        - defaultValue
+        type: object
+        properties:
+          range:
+            type: string
+    GroupFieldsRequest:
+      type: object
+      properties:
+        field:
+          type: string
+        name:
+          type: string
+        filters:
+          type: string
+          description: Fields and their values to be searched
+        function:
+          type: string
+          example: MAX
+          enum:
+          - MAX
+          - MIN
+          - AVG
+          - FIRST
+          - SUM
+          - COUNT
+          - CARDINALITY
+    ConnectorDetailRequiredField:
+      properties:
+        integrationType:
+          $ref: "#/components/schemas/CategoryType"
+      discriminator:
+        propertyName: integrationType
+        mapping:
+          SCANNER: "#/components/schemas/SCANNERDetails"
+          CMDB: "#/components/schemas/CMDBDetails"
+          TICKETING: "#/components/schemas/TICKETINGDetails"
+    AccountStatus:
+      type: string
+      enum:
+      - Active
+      - Inactive
+    EndpointResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Created endpoint permission ID
+          format: int64
+          example: 1
+        endpointRegex:
+          type: string
+          description: endpoint regex pattern
+          example: /api/vi/users
+        httpMethod:
+          $ref: "#/components/schemas/HttpMethodType"
+        permission:
+          type: integer
+          description: permission provided for the endpoint
+          format: int64
+        status:
+          $ref: "#/components/schemas/AdminStatus"
+        serviceName:
+          type: string
+          description: Service Name
+          example: Panther
+        accountIdPositionType:
+          $ref: "#/components/schemas/EndpointAccountPositionType"
+        accountIdPosition:
+          type: string
+          description: position or place holder text
+          example: account_id
+        isPublic:
+          type: boolean
+          description: api is available to all
+          example: true
+          default: false
+        skipFilters:
+          type: array
+          items:
+            type: string
+    TeamIds:
+      minItems: 1
+      type: array
+      items:
+        type: integer
+        format: int64
+    CredentialProperties:
+      required:
+      - authType
+      - credentialName
+      - credentials
+      - integrationIds
+      - userId
+      - vendor
+      type: object
+      properties:
+        credentialName:
+          type: string
+          description: "Name of the credential, should be unique among credentials\
+            \ of that particular account"
+          example: TenableCred
+        userId:
+          type: string
+          description: Id of the user who is creating the credential
+          example: user1
+        vendor:
+          type: string
+          description: Name of the vendor
+          example: TENABLE
+        integrationIds:
+          maxItems: 5
+          minItems: 1
+          type: array
+          description: List of integrations
+          example:
+          - TENABLE_IO
+          - TENABLE_SC
+          items:
+            $ref: "#/components/schemas/IntegrationId"
+        reUseCredentials:
+          type: boolean
+          example: true
+        authType:
+          type: string
+          example: "BASIC_AUTH, API_KEYS, API_TOKEN or OAUTH"
+        credentials:
+          type: array
+          items:
+            $ref: "#/components/schemas/CredentialItem"
+    WorkspaceRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 3
+          type: string
+          description: Workspace name
+          example: Securin
+        description:
+          maxLength: 1000
+          minLength: 0
+          type: string
+          description: Workspace description
+          example: Securin
+    APIField:
+      type: object
+      properties:
+        apiPath:
+          type: string
+          example: crowdstrikeAsset.assetId
+        jsonPath:
+          type: string
+          nullable: true
+          example: Asset Id
+        aliasName:
+          type: string
+          nullable: true
+          example: Asset Id
+        aliasDisplayName:
+          type: string
+          nullable: true
+          example: Asset Id
+        aliasType:
+          $ref: "#/components/schemas/AliasType"
+        dataType:
+          type: string
+          example: string
+        fieldType:
+          $ref: "#/components/schemas/FieldConfigurationType"
+        entityType:
+          $ref: "#/components/schemas/EntityType"
+        supportedFQLOperators:
+          type: array
+          items:
+            type: string
+        group:
+          type: string
+        groupId:
+          type: string
+        matchedIn:
+          type: array
+          items:
+            type: string
+    ViewDeletionRequest:
+      required:
+      - viewIds
+      type: object
+      properties:
+        viewIds:
+          type: array
+          items:
+            type: string
+        deleteForAll:
+          type: boolean
+          default: false
+    WidgetDataPoint:
+      type: object
+      properties:
+        name:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/WidgetNamedData"
+    Setting:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        dataType:
+          type: string
+        isEditable:
+          type: boolean
+        category:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        allowedValues:
+          type: string
+    PrismaCloudComputeAPIImportProperties:
+      type: object
+      properties:
+        includeInfoFindings:
+          type: boolean
+          default: false
+        assetTypesToPull:
+          type: array
+          items:
+            type: string
+            enum:
+            - Deployed Images
+            - Registries
+            - CI Images
+            - Serverless
+            - Host
+            - Containers
+    AWSInspectorAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+            - "30"
+            - "60"
+            - "90"
+            - "180"
+            - "364"
+            - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+    ResourceAccountDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: account id of the user associated
+          format: int64
+        name:
+          type: string
+          description: account name of the user associated
+        workspaces:
+          type: array
+          description: User associated workspaces for each account
+          items:
+            $ref: "#/components/schemas/ResourceWorkspaceDetail"
+        roles:
+          type: array
+          description: User associated permissions for each account
+          items:
+            $ref: "#/components/schemas/ResourceRoleDetail"
+    ManageDataActionProperties:
+      type: object
+      properties:
+        entityType:
+          type: string
+        elements:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        additionalDetails:
+          type: object
+          additionalProperties:
+            type: object
+    EntityType:
+      type: string
+    ImportFileResponse:
+      required:
+      - importFileId
+      - message
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        importFileId:
+          type: integer
+          format: int64
+    MappingDetail:
+      type: object
+      properties:
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        entityDataType:
+          type: string
+          description: The Entity dataType of the integration
+          example: ASPMContainerVulnerability
+        directMapping:
+          type: string
+          description: Api Path of a value in the give entityData type
+          example: tenableIOAsset.asset.id
+        value:
+          type: string
+          description: Any Value in string that is can be auto assigned to destination
+            data type
+          example: TestValue
+        script:
+          type: string
+          description: DSL script
+          example: map("tenableIOAsset.asset.id").toLowerCase().truncate(5)
+    PreferenceSaveResponse:
+      required:
+      - message
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    SettingsSaveResponse:
+      required:
+      - status
+      - message
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    CreateImportFileRequest:
+      required:
+      - fileName
+      - sizeInMb
+      - state
+      type: object
+      properties:
+        fileName:
+          type: string
+          description: Name of the Import File
+        fileNameInStorage:
+          type: string
+          description: Name of the Import File in Storage
+        sizeInMb:
+          type: number
+          description: Size of the File in Mb
+          format: float
+        state:
+          $ref: "#/components/schemas/ImportFileState"
+        fileInfo:
+          type: string
+          description: Information of the file
+    CustomMappedAttributes:
+      type: object
+      properties:
+        name:
+          type: string
+        entityType:
+          $ref: "#/components/schemas/EntityType"
+        mappingDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/MappingDetail"
+        dataType:
+          $ref: "#/components/schemas/MappedAttributeDataType"
+    ResponseProjection:
+      type: string
+      enum:
+      - Basic
+      - Full
+    AccountResponse:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/PantherResponseStatus"
+        message:
+          type: string
+          example: Account added successfully
+        accountId:
+          type: integer
+          description: Created account ID
+          format: int64
+          example: 1
+    TermsIncludeExcludeRegex:
+      type: object
+      properties:
+        data:
+          type: string
+      allOf:
+      - $ref: "#/components/schemas/TermsIncludeExcludeType"
+    CreateInternalTeamRequest:
+      required:
+      - accounts
+      - admins
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: Team name
+          example: Tony
+        description:
+          type: string
+          description: Team description
+          example: Stark
+        admins:
+          minItems: 1
+          type: array
+          description: Team admin members id
+          items:
+            type: string
+        members:
+          type: array
+          description: Team members id
+          items:
+            type: string
+        isInternal:
+          type: boolean
+          default: false
+        accounts:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccount"
+    Category:
+      type: string
+    AggregateRequest:
+      type: object
+      properties:
+        aggs:
+          type: array
+          description: List of aggregations
+          items:
+            $ref: "#/components/schemas/BaseAggregation"
+        filters:
+          type: string
+          description: Fields and their values to be searched
+        targetEntity:
+          type: string
+          description: target entity on which operation has to be performed
+          example: "asset, exposure"
+    DateHistogramAgg:
+      allOf:
+      - $ref: "#/components/schemas/MetricAgg"
+      - required:
+        - field
+        - interval
+        - isFixedInterval
+        type: object
+        properties:
+          interval:
+            type: string
+          order:
+            type: string
+          isFixedInterval:
+            type: boolean
+            default: false
+          extendedBounds:
+            $ref: "#/components/schemas/DateHistogramBounds"
+          hardBounds:
+            $ref: "#/components/schemas/DateHistogramBounds"
+          aggs:
+            type: array
+            description: List of aggregations
+            items:
+              $ref: "#/components/schemas/BaseAggregation"
+    UpdateTagRequest:
+      properties:
+        isSelectAll:
+          type: boolean
+        filter:
+          type: string
+        assignmentType:
+          $ref: "#/components/schemas/TagAssignmentTypeEnum"
+        isLocked:
+          type: boolean
+        resourceTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagResourceTypeEnum"
+        softDelete:
+          type: boolean
+        tagDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagDetail"
+    WIZ:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/WizAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    PRISMA_CLOUD_COMPUTE:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/PrismaCloudComputeAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    AWS_INSPECTOR:
+      type: object
+      properties:
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/AWSInspectorAPIImportProperties"
+      allOf:
+        - $ref: "#/components/schemas/RequiredFields"
+    ViewOverrideProperties:
+      type: object
+      properties:
+        filters:
+          type: string
+    EndpointValidationMappingResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Created endpoint permission ID
+          format: int64
+          example: 1
+        httpMethod:
+          $ref: "#/components/schemas/HttpMethodType"
+        permission:
+          type: integer
+          description: permission provided for the endpoint
+          format: int64
+        status:
+          $ref: "#/components/schemas/AdminStatus"
+        serviceName:
+          type: string
+          description: Service Name
+          example: Panther
+        accountIdPositionType:
+          $ref: "#/components/schemas/EndpointAccountPositionType"
+        accountIdPosition:
+          type: string
+          description: position or place holder text
+          example: account_id
+        isPublic:
+          type: boolean
+          description: api is available to all
+          example: true
+          default: false
+        skipFilters:
+          type: array
+          items:
+            type: string
+    MappedAttributesInfo:
+      type: object
+      properties:
+        path:
+          type: string
+        dataType:
+          type: string
+        mappingDetail:
+          $ref: "#/components/schemas/MappingDetail"
+    GroupByFieldResponse:
+      type: object
+      properties:
+        apiPath:
+          type: string
+          example: crowdstrikeAsset.assetId
+        jsonPath:
+          type: string
+          nullable: true
+          example: Asset Id
+        dataType:
+          type: string
+          example: string
+        entityType:
+          $ref: "#/components/schemas/EntityType"
+        relationToTargetField:
+          type: string
+        esDocName:
+          type: string
+        esParentDocName:
+          type: string
+        protoPath:
+          type: string
+        aggregation:
+          type: boolean
+        sortable:
+          type: boolean
+        integrationId:
+          $ref: "#/components/schemas/IntegrationId"
+        groupName:
+          type: string
+        groupId:
+          type: string
+        supportedAggregateFunctions:
+          type: array
+          items:
+            $ref: "#/components/schemas/AggregateFunctionsResponse"
+    SonarCloudAPIImportProperties:
+      type: object
+      properties:
+        dataRetrievalPeriod:
+          type: string
+          enum:
+          - "30"
+          - "60"
+          - "90"
+          - "180"
+          - "364"
+          - CUSTOM
+        dataRetrievalStartDate:
+          type: string
+          description: date field in YYYY-MM-DD format
+          example: 2022-02-01
+        includeInfoFindings:
+          type: boolean
+          default: false
+        enableProjectFiltering:
+          type: boolean
+          default: false
+        projectIdsForFiltering:
+          type: array
+          items:
+            type: string
+        organizationKey:
+          type: string
+    AdditionalDetailsRequiredField:
+      properties:
+        integrationType:
+          $ref: "#/components/schemas/CategoryType"
+      discriminator:
+        propertyName: integrationType
+        mapping:
+          SCANNER: "#/components/schemas/SCANNERAdditionalDetails"
+          CMDB: "#/components/schemas/CMDBAdditionalDetails"
+          TICKETING: "#/components/schemas/TICKETINGAdditionalDetails"
+    UICheckBoxInputComponent:
+      allOf:
+      - $ref: "#/components/schemas/UIInputComponent"
+      - required:
+        - defaultValue
+        type: object
+        properties:
+          options:
+            type: array
+            items:
+              $ref: "#/components/schemas/UIDisplayOptions"
+    GenericRenderComponent:
+      allOf:
+      - $ref: "#/components/schemas/UIRenderComponent"
+      - type: object
+        properties:
+          requests:
+            type: array
+            items:
+              $ref: "#/components/schemas/RenderComponentAggRequest"
+          parserIdentifier:
+            type: string
+          clickThruFields:
+            type: array
+            items:
+              $ref: "#/components/schemas/ClickThruFieldInfo"
+    ListViewGroupBy:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      nullable: true
+    FALCON_SPOTLIGHT:
+      type: object
+      properties:
+        createAssetsWithoutFindings:
+          type: boolean
+        fileImportProperties:
+          type: object
+        apiImportProperties:
+          $ref: "#/components/schemas/FalconAPIImportProperties"
+      allOf:
+      - $ref: "#/components/schemas/RequiredFields"
+    ListCompositeAssetDefinitionResponse:
+      type: object
+      properties:
+        next:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 10
+        totalRecords:
+          type: integer
+          example: 100
+        definitions:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompositeAssetInfo"
+    ImportFileState:
+      type: string
+    CredentialCommonResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        credentialId:
+          type: integer
+          format: int64

@@ -1,0 +1,255 @@
+openapi: 3.0.1
+info:
+  title: GroupBy APIs
+  description: API for GroupBy
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/exposures/_aggregate:
+    post:
+      tags:
+      - GroupBy
+      - Search
+      summary: Aggregate exposure data
+      operationId: aggregateExposureData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/AggregateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AggregateResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/weaknesses/_aggregate:
+    post:
+      tags:
+      - GroupBy
+      - Search
+      summary: Aggregate weakness data
+      operationId: aggregateWeaknessData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/AggregateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AggregateResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/field-values:
+    get:
+      tags:
+      - GroupBy
+      - Search
+      summary: Retrieve top values stored in the fields
+      operationId: getTopValues
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: field
+        in: query
+        description: The field whose values to be fetched
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: value
+        in: query
+        description: Value by which values have to be further filtered
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The records limit
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 300
+          type: integer
+      - name: filters
+        in: query
+        description: Fields and their values to be searched
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: entityType
+        in: query
+        description: The type of the field whose values are to be fetched
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/EntityType"
+      responses:
+        "200":
+          description: List of values stored in field
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/assets/_aggregate:
+    post:
+      tags:
+      - GroupBy
+      - Search
+      summary: Aggregate asset data
+      operationId: aggregateAssetData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/AggregateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AggregateResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/vulnerabilities/_aggregate:
+    post:
+      tags:
+      - GroupBy
+      - Search
+      summary: Aggregate vulnerability data
+      operationId: aggregateVulnerabilityData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/AggregateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AggregateResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/vulnerabilities/timeline/_aggregate:
+    post:
+      tags:
+      - GroupBy
+      - Search
+      summary: Aggregate vulnerability timeline data
+      operationId: aggregateVulnerabilityTimelineData
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/AggregateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AggregateResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

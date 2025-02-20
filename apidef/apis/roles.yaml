@@ -1,0 +1,71 @@
+openapi: 3.0.1
+info:
+  title: Roles APIs
+  description: API for Roles
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/roles:
+    get:
+      tags:
+      - Roles
+      summary: Get all roles in an account
+      operationId: getAccountsRoles
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: searchText
+        in: query
+        description: Used to search user name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: limit
+        in: query
+        description: Used to provide pagination limit for a page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 10
+          default: 10
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/RoleListResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

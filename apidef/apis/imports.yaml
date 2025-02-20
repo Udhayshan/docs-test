@@ -1,0 +1,609 @@
+openapi: 3.0.1
+info:
+  title: Imports APIs
+  description: API for Imports
+  version: 1.1.0
+tags:
+- name: Imports
+  description: Operations related to Imports
+paths:
+  /api/v1/accounts/{account-id}/imports/{import-id}:
+    get:
+      tags:
+      - Imports
+      summary: Get Import details for an account and ImportId
+      operationId: getAnImportDetail
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the Account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The ID of the Import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Import Search Results
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ImportDetail"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Error Getting on Import details
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    put:
+      tags:
+      - Imports
+      summary: Update Import details for an account and ImportId
+      operationId: updateImportDetails
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the Account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The ID of the Import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Update Import details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateImportRequest"
+        required: true
+      responses:
+        "200":
+          description: Import details Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ImportResponse"
+        "400":
+          description: Error updating on Import details
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Error updating on Import details
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/imports:
+    get:
+      tags:
+      - Imports
+      summary: List Imports configured for the account.
+      operationId: Get Import Details
+      parameters:
+      - name: account-id
+        in: path
+        description: The Id of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          description: The maximum number of integrations per page
+          format: int32
+          default: 20
+      - name: importId
+        in: query
+        description: The Id of the import
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: states
+        in: query
+        description: The state of imports to filter
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: retryDateTime
+        in: query
+        description: Retry Time Stamp of Import
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+        example: "{\"BEFORE|AFTER\": \"YYYY-MM-ddTHH:mm:ss\"}"
+      - name: connectorName
+        in: query
+        description: Name of the connector
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: importMode
+        in: query
+        description: Mode of the import
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/ImportMode"
+      - name: initiatedBy
+        in: query
+        description: Source from which the import initiated
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/InitiatedBy"
+      - name: initiationType
+        in: query
+        description: Type of initiator which created the import
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/InitiationType"
+      - name: searchText
+        in: query
+        description: Text to search on imports details
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: The sort details of the import
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: "id:asc,startTime:asc"
+      responses:
+        "200":
+          description: Import Search Results
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ImportListResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Error Creating on Import details
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    post:
+      tags:
+      - Imports
+      summary: Create Import details for an account
+      operationId: createImportDetails
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Create Import details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateImportRequest"
+        required: true
+      responses:
+        "200":
+          description: Import details Created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ImportResponse"
+        "400":
+          description: Error Creating on Import details
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Error Creating on Import details
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files/_upload:
+    post:
+      tags:
+      - Imports
+      summary: Upload a scan file to the Panther system
+      operationId: uploadFile
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The ID of the Import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Create Upload Request
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UploadFileRequest"
+        required: true
+      responses:
+        "200":
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UploadFileResponse"
+        "400":
+          description: Invalid Request
+        "500":
+          description: Error uploading file
+  /api/v1/accounts/{account-id}/imports/{import-id}/files/_download:
+    get:
+      tags:
+      - Imports
+      summary: Download a scan file from the Panther system
+      operationId: downloadFile
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The ID of the Import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: fileNameInStorage
+        in: query
+        description: Denotes name of the file being downloaded
+        required: true
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      - name: byteRange
+        in: query
+        description: Denotes the byte range to be consumed
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: File downloaded successfully
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                description: File to be downloaded
+                format: binary
+        "400":
+          description: Error on initiating oauth integration
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Error on initiating oauth integration
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files/_delete:
+    delete:
+      tags:
+      - Imports
+      summary: Delete a scan file from the Panther system
+      operationId: deleteFile
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The ID of the Import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: fileNameInStorage
+        in: query
+        description: Name of the file
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Delete file response
+        "400":
+          description: Invalid Request
+        "500":
+          description: Error deleting file
+  /api/v1/accounts/{account-id}/import-metadata/_persist:
+    post:
+      tags:
+      - Imports
+      summary: Persists the metadata for a particular connector
+      description: Persists the metadata for a particular connector
+      operationId: persistImportMetadata
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/PersistConnectorMetadataRequest"
+        required: true
+      responses:
+        "200":
+          description: Acknowledgement that the given metadata is stored
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/imports/{import-id}/files/file-available:
+    get:
+      tags:
+      - Imports
+      summary: Check to see if the file is available to download.
+      operationId: isFileAvailableToDownload
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The ID of the Import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: fileName
+        in: query
+        description: Denotes name of the file being downloaded
+        required: true
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: File availability response
+          content:
+            application/json:
+              schema:
+                type: boolean
+                description: Response denoting if the file is available to download
+        "400":
+          description: Invalid Request
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/imports/{import-id}/_trigger:
+    post:
+      tags:
+      - Imports
+      summary: Trigger a import
+      operationId: trigger
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The ID of the Import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "202":
+          description: Import Triggered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TriggerImportResponse"
+        "400":
+          description: Invalid Request
+        "500":
+          description: Error Triggering Import
+  /api/v1/accounts/{account-id}/imports/{import-id}/_initiate:
+    post:
+      tags:
+      - Imports
+      summary: Initiate a import
+      operationId: initiate
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: import-id
+        in: path
+        description: The ID of the Import
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Import initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/InitiateImportResponse"
+        "400":
+          description: Invalid Request Parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

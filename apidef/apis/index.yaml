@@ -1,0 +1,282 @@
+openapi: 3.0.1
+info:
+  title: Index APIs
+  description: API for Index
+  version: 1.1.0
+tags:
+- name: Index
+  description: Operations related to elastic index
+paths:
+  /api/v1/accounts/{account-id}/indices/mappings/integrations/{integration-id}/_update:
+    put:
+      tags:
+      - Index
+      summary: Update the index mappings for the given integration id for account.
+      description: Update the index mappings for the given integration id for account.
+      operationId: updateIndicesMappingForIntegration
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: integration-id
+        in: path
+        description: The ID of the integration
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/IntegrationId"
+      - name: forceUpdate
+        in: query
+        description: Whether to forcefully update mapping even if mapping already
+          present
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Indices mapping updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/IndexApiResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/indices/shared/_create:
+    put:
+      tags:
+      - Index
+      summary: Create the indices mapping which are shared across accounts.
+      description: Create the indices mapping which are shared across accounts.
+      operationId: createSharedIndicesMapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SharedIndicesChangeRequest"
+        required: true
+      responses:
+        "200":
+          description: Shared index created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/IndexApiResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/indices/shared/_delete:
+    delete:
+      tags:
+      - Index
+      summary: Delete the indices mapping which are shared across accounts.
+      description: Delete the indices mapping which are shared across accounts.
+      operationId: deleteSharedIndices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SharedIndicesChangeRequest"
+        required: true
+      responses:
+        "200":
+          description: Shared index mapping deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/IndexApiResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/indices/_delete:
+    delete:
+      tags:
+      - Index
+      summary: Delete the index mappings for the account.
+      description: Delete the index mappings for the account.
+      operationId: deleteIndicesForAccount
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Account indices deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/IndexApiResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/indices/elementDetails/{entity-type}/_get:
+    get:
+      tags:
+      - Index
+      summary: Get the element Details for an entity.
+      description: Get the element Details for an entity.
+      operationId: getElementDetailsForEntity
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: entity-type
+        in: path
+        description: The type of entity
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/EntityType"
+      responses:
+        "200":
+          description: The Details of Element for the entity
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GetElementDetailsResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/indices/{index-type}/alias/_get:
+    get:
+      tags:
+      - Index
+      summary: Get the index alias for the account.
+      description: Get the index alias for the account.
+      operationId: getIndexAliasForAccount
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: index-type
+        in: path
+        description: The index type
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/IndexType"
+      responses:
+        "200":
+          description: Elastic Index Alias for the account
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GetIndexAliasResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/indices/manage:
+    post:
+      tags:
+      - Index
+      summary: Manage Elastic Indices and Data
+      operationId: manageIndices
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: request for managing indices
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/ManageIndicesAPIRequest"
+        required: true
+      responses:
+        "200":
+          description: task completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/IndexApiResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/indices/_create:
+    put:
+      tags:
+      - Index
+      summary: Create the index mappings for the account.
+      description: Create the index mappings for the account.
+      operationId: createIndicesMappingForAccount
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: updateMappingForExistingIntegrations
+        in: query
+        description: Whether to update mapping if client is an existing client and
+          we are recreating the index
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: The names of aliases created
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateIndicesMappingResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

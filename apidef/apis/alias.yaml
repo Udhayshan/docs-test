@@ -1,0 +1,311 @@
+openapi: 3.0.1
+info:
+  title: Alias APIs
+  description: API for Alias
+  version: 1.1.0
+tags:
+- name: Alias
+  description: Operations related to Standard and Custom alias fields
+paths:
+  /api/v1/accounts/{account-id}/system-alias-fields:
+    post:
+      tags:
+      - Alias
+      summary: Create/Edit System alias fields
+      operationId: createEditStandardAlias
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/StandardAliasRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateEditAliasResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v2/accounts/{account-id}/system-alias-fields:
+    post:
+      summary: Create/Edit System alias fields version 2
+      operationId: createEditStandardAliasV2
+      tags:
+        - Alias
+      parameters:
+        - name: account-id
+          in: path
+          required: true
+          description: The ID of the account
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/StandardAliasRequestV2"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateEditAliasResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/custom-mapped-attributes:
+    post:
+      tags:
+      - Alias
+      summary: Create/Edit System Mapped  attributes
+      operationId: createEditCustomMappedAttributes
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CustomMappedAttributesRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateEditAliasResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/alias-fields:
+    post:
+      tags:
+      - Alias
+      summary: Create/Edit custom alias fields
+      operationId: createEditCustomAlias
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/AliasRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateEditAliasResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/mapped-attributes:
+    post:
+      tags:
+      - Alias
+      summary: Create/Edit System Mapped  attributes
+      operationId: createEditMappedAttributes
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/MappedAttributesRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateEditAliasResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/mapped-attributes/connector/{connector-id}:
+    get:
+      tags:
+      - Alias
+      summary: Get mappings for connector along with integration details
+      operationId: getMappingsForConnector
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connector-id
+        in: path
+        description: The ID of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ConnectorMappingDetails"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

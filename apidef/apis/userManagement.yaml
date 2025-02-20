@@ -1,0 +1,992 @@
+openapi: 3.0.1
+info:
+  title: UserManagement APIs
+  description: API for UserManagement
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/users:
+    get:
+      tags:
+      - UserManagement
+      summary: Get all users
+      operationId: getUsers
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: searchText
+        in: query
+        description: Used to search user name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ids
+        in: query
+        description: Used to filter by user id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: accountIds
+        in: query
+        description: Used to filter by account id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: workspaceIds
+        in: query
+        description: Used to filter by workspace id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: roleIds
+        in: query
+        description: Used to filter by role id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: teamIds
+        in: query
+        description: Used to filter by team id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: limit
+        in: query
+        description: Used to provide pagination limit for a page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 10
+          default: 10
+      - name: showAccountDetails
+        in: query
+        description: Used to get workspace and roles for the user using this flag
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: projection
+        in: query
+        description: Used to get user detail by projections
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/ResponseProjection"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserListResponses"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+    post:
+      tags:
+      - UserManagement
+      summary: Create a user
+      operationId: createUser
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateUserRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/internal-users/{user-id}/status:
+    put:
+      tags:
+      - UserManagement
+      summary: Update a user status
+      operationId: updateUserStatus
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: user-id
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateUserStatusRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/user-profile:
+    get:
+      tags:
+      - UserManagement
+      summary: Get logged-in user's profile for default account
+      operationId: getUserProfile
+      parameters:
+      - name: x-user-id
+        in: header
+        description: used to pass the current login user id
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: x-api-key
+        in: header
+        description: used to pass the current login api key
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: is-update-status
+        in: header
+        description: used to update the status
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserAccountPermissionResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v2/user-profile:
+    get:
+      tags:
+      - UserManagement
+      summary: Get logged-in user's profile for default account
+      operationId: getUserProfileByDefaultAccount
+      parameters:
+      - name: x-user-id
+        in: header
+        description: used to pass the current login user id
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: default-account
+        in: header
+        description: used to update the status
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      - name: searchText
+        in: query
+        description: Used to search by account name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: limit
+        in: query
+        description: Used to provide pagination limit for a page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 10
+          default: 10
+      - name: includeAsmRoles
+        in: header
+        description: used to get the asm roles
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserPermissionByAccountResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/user-profile:
+    get:
+      tags:
+      - UserManagement
+      summary: Get logged-in user's profile for default account
+      operationId: getUserProfileByAccountId
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: x-user-id
+        in: header
+        description: used to pass the current login user id
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: includeAsmRoles
+        in: header
+        description: used to get the asm roles
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserAccountPermissionResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/internal-users/{user-id}:
+    put:
+      tags:
+      - UserManagement
+      summary: Update a internal user
+      operationId: updateInternalUser
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: -1
+          minimum: -1
+          type: integer
+          format: int64
+      - name: user-id
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateInternalUserRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/users/{user-id}/basic-details:
+    get:
+      tags:
+      - UserManagement
+      summary: Get a user Basic Details
+      operationId: getUserBasicDetail
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: user-id
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserDetails"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/users/_map-accounts-workspaces:
+    post:
+      tags:
+      - UserManagement
+      summary: Update a multiple user with workspaces
+      operationId: updateUsersWithAccountsAndWorkspaces
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/MapUserAccountsWorkspaces"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GenericResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/internal-users:
+    get:
+      tags:
+      - UserManagement
+      summary: Get all internal users for account -1
+      operationId: getInternalUsers
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: -1
+          minimum: -1
+          type: integer
+          format: int64
+      - name: searchText
+        in: query
+        description: Used to search user name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ids
+        in: query
+        description: Used to filter by user id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: accountIds
+        in: query
+        description: Used to filter by account id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: workspaceIds
+        in: query
+        description: Used to filter by workspace id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: roleIds
+        in: query
+        description: Used to filter by role id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: teamIds
+        in: query
+        description: Used to filter by team id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: limit
+        in: query
+        description: Used to provide pagination limit for a page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          example: 10
+          default: 10
+      - name: showAccountDetails
+        in: query
+        description: Used to get workspace and roles for the user using this flag
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: projection
+        in: query
+        description: Used to get user detail by projections
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/ResponseProjection"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/InternalUserListResponses"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+    post:
+      tags:
+      - UserManagement
+      summary: Create a internal user
+      operationId: createInternalUser
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: -1
+          minimum: -1
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateInternalUserRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/workspaces/{workspace-id}/user-profile:
+    get:
+      tags:
+      - UserManagement
+      summary: Get logged-in user's profile by workapce id
+      operationId: getUserProfileByWorkspaceId
+      parameters:
+      - name: workspace-id
+        in: path
+        description: The ID of the workspace
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: x-user-id
+        in: header
+        description: used to pass the current login user id
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: includeAsmRoles
+        in: header
+        description: used to get the asm roles
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserAccountPermissionResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/internal-users/{user-id}/basic-details:
+    get:
+      tags:
+      - UserManagement
+      summary: Get a internal user Basic Details
+      operationId: getInternalUserBasicDetail
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: user-id
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/InternalUserDetails"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/user-profile-details:
+    get:
+      tags:
+      - UserManagement
+      summary: Get logged-in user's profile with user details alone
+      operationId: getUserProfileUserDetails
+      parameters:
+      - name: x-user-id
+        in: header
+        description: used to pass the current login user id
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: x-api-key
+        in: header
+        description: used to pass the current login api key
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: is-update-status
+        in: header
+        description: used to update the status
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/InternalUserListResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/users/{user-id}:
+    put:
+      tags:
+      - UserManagement
+      summary: Update a user
+      operationId: updateUser
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: user-id
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateUserRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - UserManagement
+      summary: Delete a user
+      operationId: deleteUser
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: user-id
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: only-cache
+        in: query
+        description: Delete only cache for a user
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/users/_map-accounts-roles:
+    post:
+      tags:
+      - UserManagement
+      summary: Update a multiple user with roles
+      operationId: updateUsersWithAccountsAndRoles
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/MapUserAccountsRoles"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GenericResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/accounts/{account-id}/users/{user-id}/_reInvite:
+    put:
+      tags:
+        - UserManagement
+      summary: Re invite a user
+      operationId: reinviteUser
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: user-id
+          in: path
+          description: The ID of the user
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+        - bearer: [ ]
+  /api/v1/accounts/{account-id}/internal-users/{user-id}/_reInvite:
+    put:
+      tags:
+        - UserManagement
+      summary: Re invite a internal user
+      operationId: reinviteInternalUser
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: user-id
+          in: path
+          description: The ID of the user
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+        - bearer: [ ]
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

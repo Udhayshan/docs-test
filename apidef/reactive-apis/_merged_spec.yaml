@@ -1,0 +1,11 @@
+---
+servers:
+- url: "http://localhost:8080"
+openapi: "3.0.0"
+paths:
+  /api/v1/accounts/{account-id}/widgets/_aggregate:
+    $ref: "./widgets.yaml#/paths/~1api~1v1~1accounts~1{account-id}~1widgets~1_aggregate"
+info:
+  title: "merged spec"
+  description: "merged spec"
+  version: "1.0.0"

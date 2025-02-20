@@ -1,0 +1,137 @@
+openapi: 3.0.1
+info:
+  title: APIFields APIs
+  description: API for APIFields
+  version: 1.1.0
+tags:
+- name: APIFields
+  description: Operations related to API Fields
+paths:
+  /api/v1/accounts/{account-id}/api-fields:
+    get:
+      tags:
+      - APIFields
+      summary: Retrieve api field names
+      description: Retrieve api fields based on the provided query parameters.
+      operationId: getApiFields
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: fetchGroups
+        in: query
+        description: Filter fields based on the group ids given.
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      - name: apipath
+        in: query
+        description: Filter views based on api paths.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: entityType
+        in: query
+        description: Filter views based on entity Type.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            $ref: "../schema/schemas.yaml#/components/schemas/EntityType"
+      - name: searchText
+        in: query
+        description: Text to search within the api paths.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: fetchOnlyAliasedFields
+        in: query
+        description: "flag to denote to return fields with alias name alone based\
+          \ on applicable filters. If set to true, even if integration id filter is\
+          \ ignored and only built-in fields are returned. It works only if includeBuiltInFields\
+          \ is set to true."
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: groupByGroupId
+        in: query
+        description: flag to denote if response items should be grouped by groupId.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: true
+      - name: searchType
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/SearchType"
+      responses:
+        "200":
+          description: A list of api paths.
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/APIFieldListResponse"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+  /api/v1/accounts/{account-id}/configured-integrations:
+    get:
+      tags:
+      - APIFields
+      summary: Retrieve Configured Integrations
+      description: Retrieve configured integrations.
+      operationId: getConfiguredIntegrations
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: A list of api paths with json names.
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/IntegrationResponse"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

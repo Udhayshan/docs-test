@@ -1,0 +1,119 @@
+openapi: 3.0.1
+info:
+  title: GroupByField APIs
+  description: API for GroupByField
+  version: 1.1.0
+tags:
+- name: GroupByField
+  description: Operations related to group by supported fields
+paths:
+  /api/v1/accounts/{account-id}/_get-columns-for-group-by-field:
+    get:
+      tags:
+      - GroupByField
+      summary: Fetch the possible apipath to group-by for a given apipath
+      description: Fetch groupby fields supported for a given apipath
+      operationId: getGroupByFields
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: path
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: fetchGroups
+        in: query
+        description: Filter fields based on the group ids given.
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      - name: entityType
+        in: query
+        description: Filter views based on entity Type.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            $ref: "../schema/schemas.yaml#/components/schemas/EntityType"
+      - name: groupByGroupId
+        in: query
+        description: flag to denote if response items should be grouped by groupId.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: true
+      responses:
+        "200":
+          description: Supported GroupBy fields
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GroupByFieldListResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+  /api/v1/accounts/{account-id}/_get-default-view-for-group-by-field:
+    get:
+      tags:
+      - GroupByField
+      summary: Fetch the default view_id for a groupBy field
+      description: Fetch the default view_id for a groupBy field
+      operationId: getDefaultViewForGroupByField
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: apiPath
+        in: query
+        description: The apiPath to search for
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Supported GroupBy fields
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/DefaultViewForGroupByFieldResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

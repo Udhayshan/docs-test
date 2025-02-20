@@ -1,0 +1,236 @@
+openapi: 3.0.1
+info:
+  title: tags APIs
+  description: API for tags
+  version: 1.1.0
+tags:
+- name: Tags
+  description: Operations related to tags
+paths:
+  /api/v1/accounts/{account-id}/tags:
+    get:
+      tags:
+      - tags
+      summary: get tag list
+      operationId: getTagListDetails
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: usrId
+        in: query
+        description: user id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          description: The maximum count per page
+          format: int32
+          default: 20
+      - name: tagIds
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: tagNames
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: resourceTypes
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: searchText
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: list of tag details
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TagDetailsResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    put:
+      tags:
+      - tags
+      summary: update new tag
+      operationId: updateTag
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: usrId
+        in: query
+        description: user id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      requestBody:
+        description: update tag request details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateTagRequest"
+        required: true
+      responses:
+        "200":
+          description: updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/UpdateTagResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    post:
+      tags:
+      - tags
+      summary: create new tag
+      operationId: createTag
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: usrId
+        in: query
+        description: user id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      requestBody:
+        description: create tag request details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateTagRequest"
+        required: true
+      responses:
+        "200":
+          description: tag created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateTagResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+      - tags
+      summary: delete tag
+      operationId: deleteTag
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: usrId
+        in: query
+        description: user id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: tagIds
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: deleted successfully
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

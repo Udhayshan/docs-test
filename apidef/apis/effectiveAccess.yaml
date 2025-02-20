@@ -1,0 +1,49 @@
+openapi: 3.0.1
+info:
+  title: EffectiveAccess APIs
+  description: API for EffectiveAccess
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/effective-access:
+    post:
+      tags:
+      - EffectiveAccess
+      summary: Get a resource effective access
+      operationId: getEffectiveAccess
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/EffectiveAccessRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/EffectiveAccessResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

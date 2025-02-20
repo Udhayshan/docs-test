@@ -1,0 +1,437 @@
+openapi: 3.0.1
+info:
+  title: Views APIs
+  description: API for Views
+  version: 1.1.0
+tags:
+- name: Views
+  description: Operations related to Views
+paths:
+  /api/v1/accounts/{account-id}/users/{user-id}/views:
+    get:
+      tags:
+      - Views
+      summary: Retrieve views
+      description: Retrieve views based on the provided query parameters.
+      operationId: getViews
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: user-id
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: pageId
+        in: query
+        description: Filter Views based on the page ID to which they are applied.
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/PageId"
+      - name: viewType
+        in: query
+        description: Filter views based on the View type.
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/ViewType"
+        example: SYSTEM | SAVED
+      - name: viewIds
+        in: query
+        description: Filter views based on View IDs.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: searchText
+        in: query
+        description: Text to search within the views.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: A list of views.
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ViewListResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/views/system-views:
+    post:
+      tags:
+      - Views
+      summary: Create System view
+      description: Create a system view with given settings.
+      operationId: createSystemView
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SystemViewRequest"
+        required: true
+      responses:
+        "200":
+          description: View created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ViewCreationResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/views/{view-id}:
+    put:
+      tags:
+      - Views
+      summary: Edit Saved view
+      description: Edit a Saved view with given id.
+      operationId: editSavedView
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: view-id
+        in: path
+        description: The ID of the view
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SavedViewRequest"
+        required: true
+      responses:
+        "200":
+          description: View created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ViewCreationResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/users/{user-id}/views/{view-id}:
+    get:
+      tags:
+      - Views
+      summary: Retrieve view settings
+      description: Retrieve view settings based on the provided query parameters.
+      operationId: getViewSettings
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: user-id
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: view-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: pageId
+        in: query
+        description: Filter Views based on the page ID to which they are applied.
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: "../schema/schemas.yaml#/components/schemas/PageId"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ViewSettingsResponse"
+  /api/v1/accounts/{account-id}/views:
+    post:
+      tags:
+      - Views
+      summary: Create Saved view
+      description: Create a Saved view with given settings.
+      operationId: createSavedView
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SavedViewRequest"
+        required: true
+      responses:
+        "200":
+          description: View created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ViewCreationResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+    delete:
+      tags:
+      - Views
+      summary: Delete a view
+      description: delete view with given ids.
+      operationId: deleteView
+      parameters:
+      - name: x-user-id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/ViewDeletionRequest"
+        required: true
+      responses:
+        "200":
+          description: View created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ViewDeletionResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+  /api/v1/accounts/{account-id}/views/system-views/{view-id}:
+    put:
+      tags:
+      - Views
+      summary: Edit System view
+      description: Edit a system view with given viewId.
+      operationId: editSystemView
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: view-id
+        in: path
+        description: The ID of the view
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SystemViewRequest"
+        required: true
+      responses:
+        "200":
+          description: View created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ViewCreationResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Invalid request parameters
+                statusCode: "400"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+              example:
+                status: ERROR
+                message: Internal server error
+                statusCode: "500"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,177 @@
+openapi: 3.0.1
+info:
+  title: Ticket Sync Config APIs
+  description: API for Ticket Sync Config
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/connectors/{connector-id}/ticket-sync-config:
+    get:
+      tags:
+      - Ticket Sync Config
+      summary: Fetches a particular ticket sync config
+      description: Fetches a particular ticket-sync-config configured against a connector
+      operationId: getTicketSyncConfig
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connector-id
+        in: path
+        description: The Id of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: id
+        in: query
+        description: Id of the saved ticket sync config
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: name
+        in: query
+        description: Name of the saved ticket sync config. Will be ignored if id is
+          given
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Fetch the appropriate ticket sync config based on query param
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GetTicketSyncSettingsResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    put:
+      tags:
+      - Ticket Sync Config
+      summary: Edit ticket sync config
+      description: Edit a particular ticket sync config configured against a connector
+      operationId: editTicketSyncConfig
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connector-id
+        in: path
+        description: The Id of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/EditTicketSyncSettingsRequest"
+        required: true
+      responses:
+        "200":
+          description: Given ticket sync config updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TicketSyncSettingsResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+    post:
+      tags:
+      - Ticket Sync Config
+      summary: Create ticket sync config
+      description: Creates a ticket sync config for the given connector
+      operationId: createTicketSyncConfig
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: connector-id
+        in: path
+        description: The Id of the connector
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateTicketSyncSettingsRequest"
+        required: true
+      responses:
+        "201":
+          description: The given ticket sync config is created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/TicketSyncSettingsResponse"
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/ErrorResponse"
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

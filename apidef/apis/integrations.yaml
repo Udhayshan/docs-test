@@ -1,0 +1,247 @@
+openapi: 3.0.1
+info:
+  title: Integrations APIs
+  description: API for Integrations
+  version: 1.1.0
+tags:
+- name: Integrations
+  description: Operations related to Integrations
+paths:
+  /api/v1/accounts/{account-id}/products:
+    get:
+      tags:
+      - Integrations
+      summary: Retrieve all products with auth types
+      description: Retrieve all available products with authType.
+      operationId: getProducts
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: vendorId
+        in: query
+        description: The Id of the vendor
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Pagination field
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        description: Pagination limit
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 20
+      responses:
+        "200":
+          description: List of all available products
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GetProductsList"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/vendors:
+    get:
+      tags:
+      - Integrations
+      summary: Retrieve all vendors
+      description: Retrieve all available vendors.
+      operationId: getVendors
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        description: Pagination field
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        in: query
+        description: Pagination limit
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 20
+      responses:
+        "200":
+          description: List of all available vendors
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/GetVendorListResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/integrations/categories:
+    get:
+      tags:
+      - Integrations
+      summary: Get the Integration Categories list for an account
+      operationId: getIntegrationCategories
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Category List
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CategoryResponse"
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+  /api/v1/accounts/{account-id}/integrations:
+    get:
+      tags:
+      - Integrations
+      summary: Get integrations list for an account
+      operationId: getIntegrations
+      parameters:
+      - name: category
+        in: query
+        description: The category of integrations to filter by
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+          default: ALL
+      - name: vendorName
+        in: query
+        description: The vendor name to filter by
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+          default: ALL
+      - name: importMode
+        in: query
+        description: The import mode name to filter by
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+          default: ALL
+      - name: integrationId
+        in: query
+        description: The Integration Id to filter by
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+          default: ALL
+      - name: searchText
+        in: query
+        description: Text to search
+        required: false
+        style: form
+        explode: true
+        allowReserved: true
+        schema:
+          type: string
+      - name: next
+        in: query
+        description: The page number of results
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: limit
+        in: query
+        description: The maximum number of integrations per page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: API_KEY
+        in: header
+        description: API key for authentication
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Integration List
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/IntegrationResponse"
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

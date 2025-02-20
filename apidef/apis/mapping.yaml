@@ -1,0 +1,82 @@
+openapi: 3.0.1
+info:
+  title: Mapping APIs
+  description: API for Mapping
+  version: 1.1.0
+tags: []
+paths:
+  /api/v1/accounts/{account-id}/concatenated-mapping:
+    post:
+      tags:
+      - Mapping
+      summary: create concatenated mapping for fields
+      description: create concatenated mapping for fields
+      operationId: createConcatenatedMapping
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/ConcatenatedMappingRequest"
+        required: true
+      responses:
+        "200":
+          description: mapping created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateEditAliasResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/mapping:
+    post:
+      tags:
+      - Mapping
+      summary: create mapping for fields
+      description: create mapping for fields
+      operationId: createMapping
+      parameters:
+      - name: account-id
+        in: path
+        description: The ID of the account
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/MappingRequest"
+        required: true
+      responses:
+        "200":
+          description: mapping created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/CreateEditAliasResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,110 @@
+openapi: 3.0.1
+info:
+  title: Endpoints APIs
+  description: API for Endpoints
+  version: 1.1.0
+tags: []
+paths:
+  /api/v2/endpoints:
+    get:
+      tags:
+      - Endpoints
+      summary: Get all the endpoints
+      operationId: getEndpointsV2
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/EndpointIdResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/endpoints:
+    get:
+      tags:
+      - Endpoints
+      summary: Get all the endpoints
+      operationId: getEndpoints
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/EndpointIdResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v1/endpoints/{endpoint-id}:
+    get:
+      tags:
+      - Endpoints
+      summary: Get a endpoint by id
+      operationId: getEndpoint
+      parameters:
+      - name: endpoint-id
+        in: path
+        description: Used to get endpoint by id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/EndpointResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+  /api/v2/endpoints/{endpoint-id}:
+    get:
+      tags:
+      - Endpoints
+      summary: Get a endpoint by id
+      operationId: getEndpointV2
+      parameters:
+      - name: endpoint-id
+        in: path
+        description: Used to get endpoint by id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/EndpointMappingValidationResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+      security:
+      - bearer: []
+components:
+  schemas: {}
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

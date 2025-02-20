@@ -1,0 +1,782 @@
+openapi: 3.0.1
+info:
+  title: Account APIs
+  description: API for Account
+  version: 1.1.0
+tags:
+  - name: Account
+    description: Operations related to Account
+paths:
+  /api/v1/accounts/{account-id}/sub-accounts/{id}:
+    get:
+      tags:
+        - Account
+      summary: Get an account details
+      operationId: getAccountDetails
+      parameters:
+        - name: account-id
+          in: path
+          description: The partner or management ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: The ID of the account get edited
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountDetailWithSubscriptionResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+    put:
+      tags:
+        - Account
+      summary: Update an account
+      operationId: updateAccount
+      parameters:
+        - name: account-id
+          in: path
+          description: The partner or management ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: The ID of the account get edited
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update account request details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/UpdateAccountRequest"
+        required: true
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+    delete:
+      tags:
+        - Account
+      summary: Delete an account
+      operationId: deleteAccount
+      parameters:
+        - name: account-id
+          in: path
+          description: The partner or management ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: The ID of the account get deleted
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+  /api/v1/accounts/{account-id}/sub-accounts/{id}/subscriptions:
+    get:
+      tags:
+        - Account
+      summary: Get an all subscription details in a account
+      operationId: getAccountSubscriptions
+      parameters:
+        - name: account-id
+          in: path
+          description: The partner or management ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: The ID of the account get edited
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: searchText
+          in: query
+          description: Used to search user name
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: next
+          in: query
+          description: The page number of results
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Used to provide pagination limit for a page
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 10
+            default: 10
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountSubscriptionListResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+    post:
+      tags:
+        - Account
+      summary: Add an account subscription
+      operationId: addAccountSubscription
+      parameters:
+        - name: account-id
+          in: path
+          description: The partner or management ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: The ID of the account get edited
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update account request details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SubscriptionRequest"
+        required: true
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountSubscriptionResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+  /api/v1/accounts/{account-id}/sub-accounts:
+    get:
+      tags:
+        - Account
+      summary: Get all accounts under the partner account
+      operationId: listAccount
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: ids
+          in: query
+          description: Used to filter by account ids
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+        - name: searchText
+          in: query
+          description: Used to search user name
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: next
+          in: query
+          description: The page number of results
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Used to provide pagination limit for a page
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 10
+            default: 10
+        - name: type
+          in: query
+          description: Used to filter account by type
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: "../schema/schemas.yaml#/components/schemas/AccountsType"
+        - name: managementAccountId
+          in: query
+          description: Used to filter by management account id
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+        - name: status
+          in: query
+          description: Used to filter by account status
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: "../schema/schemas.yaml#/components/schemas/AccountStatus"
+        - name: partnerAccountId
+          in: query
+          description: Used to filter by partner account id
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+        - name: isSandboxAccount
+          in: query
+          description: Used to filter linked account is test account
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+        - name: projection
+          in: query
+          description: Used to get account detail projections
+          required: false
+          style: form
+          explode: true
+          schema:
+            $ref: "../schema/schemas.yaml#/components/schemas/ResponseProjection"
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountDetailListResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+    post:
+      tags:
+        - Account
+      summary: Create an account
+      operationId: createAccount
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: x-user-id
+          in: header
+          description: used to pass the current login user id
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Create account request details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/CreateAccountRequest"
+        required: true
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+  /api/v1/accounts/{account-id}/sub-accounts/{id}/subscriptions/{subscription-id}:
+    get:
+      tags:
+        - Account
+      summary: Get an subscription details
+      operationId: getAccountSubscriptionDetails
+      parameters:
+        - name: account-id
+          in: path
+          description: The partner or management ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: The ID of the account get edited
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: subscription-id
+          in: path
+          description: The ID of the subscription in the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountSubscriptionDetailResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+    put:
+      tags:
+        - Account
+      summary: Update an subscription in an account
+      operationId: updateAccountSubscription
+      parameters:
+        - name: account-id
+          in: path
+          description: The partner or management ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: The ID of the account get edited
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: subscription-id
+          in: path
+          description: The ID of the subscription in the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update account request details
+        content:
+          application/json:
+            schema:
+              $ref: "../schema/schemas.yaml#/components/schemas/SubscriptionRequest"
+        required: true
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountSubscriptionResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+    delete:
+      tags:
+        - Account
+      summary: delete an subscription details
+      operationId: deleteAccountSubscriptionDetails
+      parameters:
+        - name: account-id
+          in: path
+          description: The partner or management ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: The ID of the account subscription get deleted
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: subscription-id
+          in: path
+          description: The ID of the subscription in the account to get deleted
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/AccountSubscriptionResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+        "500":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PantherErrorResponse"
+      security:
+        - bearer: [ ]
+  /api/v1/accounts/{account-id}/preferences:
+    get:
+      tags:
+        - Account
+      summary: Get Account Preferences
+      operationId: getAccountPreferences
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: preferences
+          in: query
+          description: The preferences keys to filter
+          required: false
+          style: form
+          explode: true
+          allowReserved: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PreferencesResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+    post:
+      tags:
+        - Account
+      summary: Save Account Preferences
+      operationId: saveAccountPreferences
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schema/schemas.yaml#/components/schemas/PreferencesRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/PreferenceSaveResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+  /api/v1/accounts/{account-id}/settings:
+    get:
+      tags:
+        - Account
+      summary: Get Account Settings
+      operationId: getAccountSettings
+      parameters:
+        - name: account-id
+          in: path
+          description: The ID of the account
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: settings
+          in: query
+          description: The setting keys to filter
+          required: false
+          style: form
+          explode: true
+          allowReserved: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "../schema/schemas.yaml#/components/schemas/SettingsResponse"
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+    post:
+      summary: Save Account Settings
+      operationId: saveAccountSettings
+      tags:
+        - Account
+      parameters:
+        - name: account-id
+          in: path
+          required: true
+          description: The ID of the account
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schema/schemas.yaml#/components/schemas/SettingsRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '../schema/schemas.yaml#/components/schemas/SettingsSaveResponse'
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Server error
+components:
+  schemas: { }
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
